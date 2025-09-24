@@ -1,0 +1,42 @@
+import React from "react";
+import { Link } from "react-router";
+import HeroImage from "../../assets/images/Hero.png";
+
+const Hero = () => {
+  return (
+    <div className="bg-bg-block">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-40 items-center">
+          <div className="col-span-1 md:col-span-6 flex flex-col items-center md:items-start gap-6 px-1 md:px-0 text-center md:text-left">
+            <h1 className="title">
+              Натуральные специи и&nbsp;пряности для ваших кулинарных шедевров.
+            </h1>
+
+            <p className="text-lg sm:text-xl md:text-2xl">
+              Мы собрали лучшие вкусы со всего&nbsp;мира, чтобы каждая ваша
+              тарелка наполнялась ароматом и пользой. Всегда свежие, всегда
+              качественные.
+            </p>
+
+            <Link
+              to={`/`}
+              className="btn btn-primary w-full md:w-auto "
+            >
+              Перейти в каталог
+            </Link>
+          </div>
+
+          <div className="col-span-1 lg:col-span-6 flex">
+            <img
+              src={HeroImage}
+              alt="HeroImage"
+              className="hidden lg:block max-w-full h-auto"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

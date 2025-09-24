@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* COLORS */
+  --color-primary: #53392f; /* button */
+  --color-primary-hover: #6b4a3e; /* buttonHover */
+  --color-border-light: #e1d9cf; /* line */
+  --color-text-default: #333333; /* text */
+  --color-text-alt: #ffffff; /* AltText */
+  --color-bg-block: #f6f0e8; /* BlockBackground */
+  --color-text-title: #1d2020; /* Title | Logo */
+  --color-bg-base: #fefbf8; /* Background | Logo */
+  --color-border-dark: #290d03; /* dark border */
+
+  /* FONTS */
+  --font-playfair: "Playfair Display", serif;
+  --font-openSans: "Open Sans", sans-serif;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  font-family: var(--font-openSans);
+}
+
+/* Buttons */
+
+@layer components {
+  .btn {
+    @apply font-openSans text-lg sm:text-xl md:text-2xl lg:text-4xl rounded-md border font-normal px-15 py-6 border-[var(--color-border-dark)] transition-all duration-300 ease-in-out;
+  }
+
+  .btn-primary {
+    @apply bg-[var(--color-primary)] text-white;
+  }
+  .btn-primary:hover {
+    @apply bg-[var(--color-primary-hover)]  text-[var(--color-text-alt)];
+  }
+  .btn-primary:active {
+    @apply opacity-95;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--color-text-title)] text-white;
+  }
+  .btn-secondary:hover {
+    @apply bg-[var(--color-text-default)] text-white;
+  }
+  .btn-secondary:active {
+    @apply opacity-95;
+  }
+}
+
+.title {
+  @apply font-playfair font-semibold text-3xl sm:text-4xl md:text-5xl;
+}
