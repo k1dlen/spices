@@ -5,7 +5,7 @@ import FeatherIcon from "feather-icons-react";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="border-border-light border-b-1 bg-bg-block">
+    <header className="border-border-light border-b-1 bg-bg-block px-1 sm:px-0">
       <div className="container mx-auto py-5">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
@@ -124,12 +124,14 @@ const Header = () => {
             <Link>
               <FeatherIcon
                 icon="user"
+                strokeWidth={2.3} 
                 className="text-text-title w-8 h-auto active:opacity-70 hover:text-primary transition-all duration-300"
               />
             </Link>
             <Link>
               <FeatherIcon
                 icon="shopping-cart"
+                strokeWidth={2.3} 
                 className="text-text-title w-8 h-auto active:opacity-70 hover:text-primary transition-all duration-300"
               />
             </Link>

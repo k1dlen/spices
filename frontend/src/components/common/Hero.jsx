@@ -5,9 +5,9 @@ import HeroImage from "../../assets/images/Hero.png";
 const Hero = () => {
   return (
     <div className="bg-bg-block">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-1 sm:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-40 items-center">
-          <div className="col-span-1 md:col-span-6 flex flex-col items-center md:items-start gap-6 px-1 md:px-0 text-center md:text-left">
+          <div className="col-span-1 md:col-span-6 flex flex-col items-center md:items-start gap-6 md:px-0 text-center md:text-left">
             <h1 className="title">
               Натуральные специи и&nbsp;пряности для ваших кулинарных шедевров.
             </h1>
