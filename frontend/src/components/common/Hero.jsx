@@ -12,15 +12,16 @@ const Hero = () => {
               Натуральные специи и&nbsp;пряности для ваших кулинарных шедевров.
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl">
+            <p className="text-lg sm:text-xl md:text-2xl text-text-default">
               Мы собрали лучшие вкусы со всего&nbsp;мира, чтобы каждая ваша
               тарелка наполнялась ароматом и пользой. Всегда свежие, всегда
               качественные.
             </p>
 
             <Link
-              to={`/`}
-              className="btn btn-primary w-full md:w-auto "
+              to={`catalog`}
+              className="btn btn-primary w-full md:w-auto"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Перейти в каталог
             </Link>

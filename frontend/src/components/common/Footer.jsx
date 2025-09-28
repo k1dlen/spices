@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="mt-20 bg-primary text-text-alt px-1 sm:px-0">
+    <footer className=" bg-primary text-text-alt px-1 sm:px-0">
       <div className="container mx-auto py-12">
         <div className="flex flex-col md:flex-row md:justify-between items-start gap-8">
           <div className="flex flex-col items-start md:items-start md:text-left">
@@ -45,7 +45,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to={`/`}
+                  to={`/catalog`}
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
                   className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
                 >
                   Каталог
@@ -53,7 +56,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to={`/`}
+                  to={`/#about`}
                   className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
                 >
                   О нас
@@ -62,7 +65,10 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div
+            className="flex flex-col items-center transition-all duration-300"
+            id="contacts"
+          >
             <ul className="space-y-2 text-lg">
               <li className="font-semibold">Контакты</li>
               <li>
@@ -91,13 +97,13 @@ const Footer = () => {
                     strokeWidth={1.5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-8 h-auto"
+                    className="w-9 h-auto"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
                   </svg>
                 </a>
-                <a href={`https://wa.me/+79999999999`}>
+                <a href={`https://wa.me/+79161234567`}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -106,7 +112,7 @@ const Footer = () => {
                     strokeWidth={1.5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-8 h-auto"
+                    className="w-9 h-auto"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />

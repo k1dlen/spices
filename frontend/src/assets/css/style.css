@@ -23,11 +23,15 @@ body {
   font-family: var(--font-openSans);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Buttons */
 
 @layer components {
   .btn {
-    @apply font-openSans text-lg sm:text-xl md:text-2xl lg:text-4xl rounded-md border font-normal px-15 py-6 border-[var(--color-border-dark)] transition-all duration-300 ease-in-out;
+    @apply font-openSans text-lg sm:text-xl md:text-2xl lg:text-4xl rounded-md border font-normal px-6 py-3 md:px-10 md:py-4 xl:px-15 xl:py-6 border-[var(--color-border-dark)] transition-all duration-300 ease-in-out;
   }
 
   .btn-primary {
@@ -52,5 +56,9 @@ body {
 }
 
 .title {
-  @apply font-playfair font-semibold text-3xl sm:text-4xl md:text-5xl;
+  @apply font-playfair font-semibold text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-text-title;
+}
+
+.subtitle {
+  @apply font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-title;
 }

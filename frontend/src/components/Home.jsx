@@ -1,17 +1,37 @@
-import React from "react";
-import Header from "./common/Header";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Layout } from "./common/Layout";
 import Hero from "./common/Hero";
 import OurCollection from "./common/OurCollection";
+import About from "./common/About";
 
 const Home = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const scrollToAnchor = () => {
+      const { hash } = location;
+      if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              element.scrollIntoView({ behavior: "smooth" });
+            });
+          });
+        }
+      }
+    };
+
+    scrollToAnchor();
+  }, [location]);
+
   return (
-    <>
-      <Layout>
-        <Hero />
-        <OurCollection />
-      </Layout>
-    </>
+    <Layout>
+      <Hero />
+      <OurCollection />
+      <About />
+    </Layout>
   );
 };
 

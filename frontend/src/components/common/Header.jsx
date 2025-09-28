@@ -53,7 +53,7 @@ const Header = () => {
               Главная
             </Link>
             <Link
-              to={`/`}
+              to={`/catalog`}
               className="
                 relative 
                 inline-block 
@@ -75,7 +75,7 @@ const Header = () => {
               Каталог
             </Link>
             <Link
-              to={`/`}
+              to={`/#about`}
               className="
                 relative 
                 inline-block 
@@ -97,7 +97,51 @@ const Header = () => {
               О нас
             </Link>
             <Link
-              to={`/`}
+              to="#contacts"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById("contacts");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+
+                  element.classList.add(
+                    "ring",
+                    "ring-1",
+                    "ring-border-light",
+                    "rounded-md",
+                    "ring-offset-2",
+                    "ring-offset-primary",
+                    "bg-bg-primary",
+                    "transition-all",
+                    "duration-500"
+                  );
+
+                  const observer = new IntersectionObserver(
+                    ([entry]) => {
+                      if (entry.isIntersecting) {
+                        setTimeout(() => {
+                          element.classList.remove(
+                            "ring",
+                            "ring-1",
+                            "ring-border-light",
+                            "rounded-md",
+                            "ring-offset-2",
+                            "ring-offset-primary",
+                            "bg-bg-primary",
+                            "transition-all",
+                            "duration-500"
+                          );
+                        }, 1000);
+
+                        observer.disconnect();
+                      }
+                    },
+                    { threshold: 0.8 }
+                  );
+
+                  observer.observe(element);
+                }
+              }}
               className="
                 relative 
                 inline-block 
@@ -124,15 +168,15 @@ const Header = () => {
             <Link>
               <FeatherIcon
                 icon="user"
-                strokeWidth={2.3} 
-                className="text-text-title w-8 h-auto active:opacity-70 hover:text-primary transition-all duration-300"
+                strokeWidth={2.3}
+                className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-300"
               />
             </Link>
-            <Link>
+            <Link to={`/cart`}>
               <FeatherIcon
                 icon="shopping-cart"
-                strokeWidth={2.3} 
-                className="text-text-title w-8 h-auto active:opacity-70 hover:text-primary transition-all duration-300"
+                strokeWidth={2.3}
+                className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-300"
               />
             </Link>
 
@@ -140,7 +184,7 @@ const Header = () => {
               className="md:hidden flex flex-col gap-1"
               onClick={() => setIsOpen(!isOpen)}
             >
-              <FeatherIcon icon="menu" className="text-text-title w-8 h-auto" />
+              <FeatherIcon icon="menu" className="text-text-title w-9 h-auto" />
             </button>
           </div>
         </div>
@@ -157,22 +201,63 @@ const Header = () => {
               Главная
             </Link>
             <Link
-              to={`/`}
-              href="#"
+              to={`/catalog`}
               className="active:text-primary hover:text-primary-hover"
             >
               Каталог
             </Link>
             <Link
-              to={`/`}
-              href="#"
+              to={`/#about`}
               className="active:text-primary hover:text-primary-hover"
             >
               О нас
             </Link>
             <Link
-              to={`/`}
-              href="#"
+              to="#contacts"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById("contacts");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+
+                  element.classList.add(
+                    "ring",
+                    "ring-1",
+                    "ring-border-light",
+                    "rounded-md",
+                    "ring-offset-2",
+                    "ring-offset-primary",
+                    "bg-bg-primary",
+                    "transition-all",
+                    "duration-500"
+                  );
+
+                  const observer = new IntersectionObserver(
+                    ([entry]) => {
+                      if (entry.isIntersecting) {
+                        setTimeout(() => {
+                          element.classList.remove(
+                            "ring",
+                            "ring-1",
+                            "ring-border-light",
+                            "rounded-md",
+                            "ring-offset-2",
+                            "ring-offset-primary",
+                            "bg-bg-primary",
+                            "transition-all",
+                            "duration-500"
+                          );
+                        }, 1000);
+
+                        observer.disconnect();
+                      }
+                    },
+                    { threshold: 0.8 }
+                  );
+
+                  observer.observe(element);
+                }
+              }}
               className="active:text-primary hover:text-primary-hover"
             >
               Контакты
