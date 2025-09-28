@@ -23,7 +23,7 @@ const Hero = () => {
               className="btn btn-primary w-full md:w-auto"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
-              Перейти в каталог
+              Открыть каталог
             </Link>
           </div>
 

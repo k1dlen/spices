@@ -51,7 +51,7 @@ const Catalog = () => {
   return (
     <>
       <Layout>
-        <div className="container mx-auto my-20 px-1 sm:px-0">
+        <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4  items-start">
             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 ">
               <div className="shadow-lg p-4 rounded-md">
@@ -165,7 +165,7 @@ const Catalog = () => {
                 </ul>
               </div>
             </div>
-            <div className="col-span-1 lg:col-span-9 flex flex-col gap-6">
+            <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 mt-4 sm:mt-6 lg:mt-0">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {products &&
                   products.map((product) => {
@@ -193,7 +193,7 @@ const Catalog = () => {
                             to={`/product/${product.id}`}
                             className="btn btn-primary text-center self-start"
                           >
-                            Перейти
+                            Подробнее
                           </Link>
                         </div>
                       </div>

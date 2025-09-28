@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div
       id="about"
-      className="xl:py-20 lg:py-10 my-20 bg-[var(--color-bg-base)] relative overflow-hidden"
+      className="xl:py-20 lg:py-10 my-10 lg:my-20 bg-[var(--color-bg-base)] relative overflow-hidden"
     >
       <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-8 items-center">
         <div>

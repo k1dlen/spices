@@ -52,7 +52,7 @@ const Product = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 relative">
             <Swiper
@@ -113,7 +113,7 @@ const Product = () => {
           </div>
         </div>
 
-        <h2 className="title text-center my-20">Случайные товары</h2>
+        <h2 className="title text-center my-10 lg:my-20">Случайные товары</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
           {randomProducts &&

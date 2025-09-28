@@ -26,7 +26,7 @@ const OurCollection = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-20 px-1 sm:px-0">
+    <div className="container mx-auto mt-10 lg:mt-20 px-1 sm:px-0">
       <h2 className="title text-center">Наша Коллекция</h2>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-10 items-start">
         {products &&
@@ -51,7 +51,7 @@ const OurCollection = () => {
                   }
                   className="btn btn-primary text-center self-start"
                 >
-                  Перейти
+                  Подробнее
                 </Link>
               </div>
             );
