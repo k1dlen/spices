@@ -17,6 +17,11 @@ const Home = () => {
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               element.scrollIntoView({ behavior: "smooth" });
+              window.history.replaceState(
+                null,
+                "",
+                window.location.pathname + window.location.search
+              );
             });
           });
         }

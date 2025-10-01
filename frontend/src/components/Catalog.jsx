@@ -54,7 +54,7 @@ const Catalog = () => {
         <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4  items-start">
             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 ">
-              <div className="shadow-lg p-4 rounded-md">
+              <div className="shadow-sm p-4 rounded-md">
                 <h3 className="mb-3 text-2xl md:text-4xl sm:text-3xl text-text-title">
                   Специи
                 </h3>
@@ -109,7 +109,7 @@ const Catalog = () => {
                   </li>
                 </ul>
               </div>
-              <div className="shadow-lg p-4 rounded-md">
+              <div className="shadow-sm p-4 rounded-md">
                 <h3 className="mb-3 text-2xl md:text-4xl sm:text-3xl text-text-title">
                   Пряности
                 </h3>
@@ -191,6 +191,9 @@ const Catalog = () => {
                           </p>
                           <Link
                             to={`/product/${product.id}`}
+                            onClick={() =>
+                              window.scrollTo({ top: 0, behavior: "smooth" })
+                            }
                             className="btn btn-primary text-center self-start"
                           >
                             Подробнее

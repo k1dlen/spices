@@ -13,7 +13,7 @@ const Header = () => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 463 314"
-                className="w-20 h-auto text-text-title hover:text-primary-hover active:text-primary transition-all duration-300"
+                className="w-15 sm:w-20 h-auto text-text-title hover:text-primary-hover active:text-primary transition-all duration-300"
                 fill="currentColor"
                 style={{
                   shapeRendering: "geometricPrecision",
@@ -165,7 +165,7 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Link>
+            <Link to={`/profile`}>
               <FeatherIcon
                 icon="user"
                 strokeWidth={2.3}

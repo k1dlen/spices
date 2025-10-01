@@ -98,6 +98,43 @@ const Cart = () => {
               ))}
             </tbody>
           </table>
+
+          <div className="w-[500px] max-w-[40%] flex-shrink-0 ml-auto mt-10">
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-between mb-2">
+                <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-default">
+                  Сумма
+                </span>
+                <span className="text-text-title font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+                  ₽{subtotal.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between mb-2">
+                <span className="!text-text-default !font-normal subtitle ">
+                  Скидка
+                </span>
+                <span className="text-text-title subtitle">
+                  ₽{discount.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between border-t border-text-default/20 pt-2 font-semibold">
+                <span className="font-playfair font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-title">
+                  Итого
+                </span>
+                <span className="font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-title">
+                  ₽{total.toFixed(2)}
+                </span>
+              </div>
+
+              <Link
+                to={`/checkout`}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="btn btn-primary items-start self-start  mt-4"
+              >
+                Оформить заказ
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="lg:hidden flex flex-col gap-6">
@@ -140,6 +177,69 @@ const Cart = () => {
               </button>
             </div>
           ))}
+        </div>
+
+        <div className="rounded-md p-4 shadow-sm mt-10 lg:hidden">
+          <div className="sm:hidden space-y-1 mb-3">
+            <div>
+              <span className="text-text-default text-xl">Сумма:</span>
+              <span className="text-text-title font-semibold text-xl ml-2">
+                ₽{subtotal.toFixed(2)}
+              </span>
+            </div>
+            <div>
+              <span className="text-text-default text-xl">Скидка:</span>
+              <span className="text-text-title font-semibold text-xl ml-2">
+                ₽{discount.toFixed(2)}
+              </span>
+            </div>
+          </div>
+
+          <div className="hidden sm:block">
+            <div className="flex justify-between mb-2">
+              <span className="text-text-default text-xl md:text-2xl">
+                Сумма
+              </span>
+              <span className="text-text-title font-semibold text-xl md:text-2xl">
+                ₽{subtotal.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="text-text-default text-xl md:text-2xl">
+                Скидка
+              </span>
+              <span className="text-text-title font-semibold text-xl md:text-2xl">
+                ₽{discount.toFixed(2)}
+              </span>
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-text-default/20">
+            <div className="sm:hidden">
+              <span className="text-text-title font-playfair font-semibold text-xl">
+                Итого:
+              </span>
+              <span className="text-text-title font-semibold text-xl ml-2">
+                ₽{total.toFixed(2)}
+              </span>
+            </div>
+            <div className="hidden sm:flex justify-between">
+              <span className="text-text-title font-playfair font-semibold text-xl md:text-2xl">
+                Итого
+              </span>
+              <span className="text-text-title font-semibold text-xl md:text-2xl">
+                ₽{total.toFixed(2)}
+              </span>
+            </div>
+          </div>
+
+          <Link
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            to={`/checkout`}
+            className="btn btn-primary sm:w-full sm:text-center mt-4"
+          >
+            Оформить заказ
+          </Link>
         </div>
       </div>
     </Layout>

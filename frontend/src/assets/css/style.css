@@ -31,7 +31,7 @@ html {
 
 @layer components {
   .btn {
-    @apply font-openSans text-lg sm:text-xl md:text-2xl lg:text-4xl rounded-md border font-normal px-6 py-3 md:px-10 md:py-4 xl:px-15 xl:py-6 border-[var(--color-border-dark)] transition-all duration-300 ease-in-out;
+    @apply font-openSans inline-block text-xl md:text-2xl lg:text-3xl xl:text-4xl rounded-md border font-normal px-6 py-3 md:px-8 md:py-3.5 lg:px-9 lg:py-4 xl:px-12 xl:py-5 border-[var(--color-border-dark)] transition-all duration-300 ease-in-out;
   }
 
   .btn-primary {
