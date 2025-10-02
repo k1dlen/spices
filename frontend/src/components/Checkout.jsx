@@ -45,7 +45,7 @@ const Checkout = () => {
                   </label>
                   <input
                     type="text"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="Ваше имя"
                   />
                 </div>
@@ -58,7 +58,7 @@ const Checkout = () => {
                   </label>
                   <input
                     type="email"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="example@gmail.com"
                   />
                 </div>
@@ -71,7 +71,7 @@ const Checkout = () => {
                   </label>
                   <input
                     type="text"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl  rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl  rounded-md"
                     placeholder="Фамилия пользователя"
                   />
                 </div>
@@ -84,7 +84,7 @@ const Checkout = () => {
                   </label>
                   <input
                     type="tel"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="+7 (999) 999-99-99"
                   />
                 </div>
@@ -92,7 +92,7 @@ const Checkout = () => {
               <div className="mt-6">
                 <h3 className="subtitle font-playfair mb-6">Адрес доставки</h3>
                 <textarea
-                  className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full "
+                  className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full "
                   placeholder="Город, улица, дом, квартира"
                   rows={3}
                 />
@@ -100,7 +100,7 @@ const Checkout = () => {
               <div className="mt-6">
                 <h3 className="subtitle font-playfair mb-4">Способ оплаты</h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-2 border rounded-md">
+                  <div className="flex items-center gap-3 p-2 border border-border-light rounded-md">
                     <input
                       type="radio"
                       name="payment"
@@ -115,7 +115,7 @@ const Checkout = () => {
                       Наличными при получении
                     </label>
                   </div>
-                  <div className="flex items-center gap-3 p-2 border rounded-md">
+                  <div className="flex items-center gap-3 p-2 border border-border-light rounded-md">
                     <input
                       type="radio"
                       name="payment"

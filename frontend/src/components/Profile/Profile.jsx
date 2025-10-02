@@ -27,7 +27,7 @@ const Profile = () => {
                   </label>
                   <input
                     type="text"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="Ваше имя"
                   />
                 </div>
@@ -40,7 +40,7 @@ const Profile = () => {
                   </label>
                   <input
                     type="email"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="example@gmail.com"
                   />
                 </div>
@@ -53,7 +53,7 @@ const Profile = () => {
                   </label>
                   <input
                     type="text"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl  rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl  rounded-md"
                     placeholder="Фамилия пользователя"
                   />
                 </div>
@@ -66,7 +66,7 @@ const Profile = () => {
                   </label>
                   <input
                     type="tel"
-                    className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md"
+                    className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md"
                     placeholder="+7 (999) 999-99-99"
                   />
                 </div>
@@ -74,7 +74,7 @@ const Profile = () => {
               <div className="mt-6">
                 <h3 className="subtitle font-playfair mb-6">Адрес доставки</h3>
                 <textarea
-                  className="border p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full "
+                  className="border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full "
                   placeholder="Город, улица, дом, квартира"
                   rows={3}
                 />
