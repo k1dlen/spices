@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router";
+import { AuthContext } from "../context/Auth";
 
 const UserSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logout } = useContext(AuthContext);
   return (
     <>
       <div className="p-6 hidden lg:block">
@@ -25,6 +27,7 @@ const UserSidebar = () => {
           </li>
           <li className="border-b border-text-default text-lg lg:text-xl xl:text-2xl mb-2">
             <Link
+              onClick={logout}
               to="/"
               className="block px-2.5 py-2.5 text-text-default hover:text-[var(--color-primary)] transition-colors"
             >
@@ -64,9 +67,13 @@ const UserSidebar = () => {
                 </Link>
               </li>
               <li>
-                <button className="text-text-default hover:text-[var(--color-primary)] text-left w-full">
+                <Link
+                  to={`/`}
+                  onClick={logout}
+                  className="text-text-default hover:text-[var(--color-primary)] text-left w-full"
+                >
                   Выход
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
