@@ -45,7 +45,7 @@ const Login = () => {
         toast.error(result.message || "Ошибка авторизации");
       }
     } catch (error) {
-      console.error("Network or parsing error:", error);
+      console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
     }
   };

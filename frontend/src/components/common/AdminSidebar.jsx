@@ -20,7 +20,7 @@ const AdminSidebar = () => {
           </li>
           <li className="border-b border-text-default mb-2">
             <Link
-              to="/"
+              to="/admin/categories"
               className="block px-2.5 py-2.5 text-text-default text-lg lg:text-xl xl:text-2xl hover:text-primary transition-colors"
             >
               Категории
@@ -67,7 +67,7 @@ const AdminSidebar = () => {
             className="list-none p-4 font-semibold text-text-title cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            Меню аккаунта
+            Панель управления
           </div>
           <div
             className={`overflow-hidden transition-all duration-300 ease-in-out ${
@@ -77,18 +77,42 @@ const AdminSidebar = () => {
             <ul className="p-4 pt-2 space-y-2">
               <li>
                 <Link
-                  to="/profile"
+                  to="/admin/dashboard"
                   className="text-text-default hover:text-primary"
                 >
-                  Мои данные
+                  Панель управления
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/profile/orders"
+                  to="/admin/categories"
                   className="text-text-default hover:text-primary"
                 >
-                  Мои заказы
+                  Категории
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/dashboard"
+                  className="text-text-default hover:text-primary"
+                >
+                  Товары
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/dashboard"
+                  className="text-text-default hover:text-primary"
+                >
+                  Заказы
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/dashboard"
+                  className="text-text-default hover:text-primary"
+                >
+                  Пользователи
                 </Link>
               </li>
               <li>

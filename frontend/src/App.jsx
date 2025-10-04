@@ -14,6 +14,10 @@ import Dashboard from "./components/admin/Dashboard";
 import { AdminRequireAuth } from "./components/admin/AdminRequireAuth";
 import { RequireAuth } from "./components/profile/RequireAuth";
 import Register from "./components/profile/Register";
+import { default as ShowCategories } from "./components/admin/category/Show";
+import { default as CreateCategory } from "./components/admin/category/Create";
+import { default as ShowSubcategories } from "./components/admin/subcategory/Show";
+import { default as CreateSubcategory } from "./components/admin/subcategory/Create";
 
 function App() {
   return (
@@ -46,6 +50,38 @@ function App() {
             element={
               <AdminRequireAuth>
                 <Dashboard />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/categories"
+            element={
+              <AdminRequireAuth>
+                <ShowCategories />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/categories/create"
+            element={
+              <AdminRequireAuth>
+                <CreateCategory />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/subcategories/:id"
+            element={
+              <AdminRequireAuth>
+                <ShowSubcategories />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/subcategories/:id/create"
+            element={
+              <AdminRequireAuth>
+                <CreateSubcategory />
               </AdminRequireAuth>
             }
           />

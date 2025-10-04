@@ -113,9 +113,9 @@ const Product = () => {
           </div>
         </div>
 
-        <h2 className="title text-center my-10 lg:my-20">Случайные товары</h2>
+        <h2 className="title text-center mt-20">Случайные товары</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start mt-10">
           {randomProducts &&
             randomProducts.map((product) => {
               return (

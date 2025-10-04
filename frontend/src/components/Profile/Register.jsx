@@ -43,7 +43,7 @@ const Register = () => {
         });
       }
     } catch (error) {
-      console.error("Network or parsing error:", error);
+      console.error("Network or parsing error");
       toast.error("Сервер недоступен. Проверьте подключение.");
     }
   };
@@ -51,7 +51,7 @@ const Register = () => {
   return (
     <Layout>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
-        <h1 className="title text-start mb-10 lg:mb-20">Регистрация</h1>
+        <h1 className="title text-start mb-10">Регистрация</h1>
         <div className="max-w-lg mx-auto">
           <div className="bg-bg-base rounded-md shadow-sm p-6">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

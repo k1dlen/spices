@@ -32,7 +32,7 @@ const Cart = () => {
   return (
     <Layout>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
-        <h1 className="title text-start mb-10 lg:mb-20">Корзина</h1>
+        <h1 className="title text-start mb-10">Корзина</h1>
         <div className="hidden lg:block">
           <table className="w-full border-collapse">
             <thead>
