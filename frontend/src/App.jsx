@@ -14,10 +14,17 @@ import Dashboard from "./components/admin/Dashboard";
 import { AdminRequireAuth } from "./components/admin/AdminRequireAuth";
 import { RequireAuth } from "./components/profile/RequireAuth";
 import Register from "./components/profile/Register";
+
 import { default as ShowCategories } from "./components/admin/category/Show";
 import { default as CreateCategory } from "./components/admin/category/Create";
+import { default as EditCategory } from "./components/admin/category/Edit";
+
 import { default as ShowSubcategories } from "./components/admin/subcategory/Show";
 import { default as CreateSubcategory } from "./components/admin/subcategory/Create";
+import { default as EditSubcategory } from "./components/admin/subcategory/Edit";
+
+import { default as ShowProducts } from "./components/admin/product/Show";
+import { default as CreateProducts } from "./components/admin/product/Create";
 
 function App() {
   return (
@@ -70,6 +77,14 @@ function App() {
             }
           />
           <Route
+            path="admin/categories/edit/:id"
+            element={
+              <AdminRequireAuth>
+                <EditCategory />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
             path="admin/subcategories/:id"
             element={
               <AdminRequireAuth>
@@ -82,6 +97,30 @@ function App() {
             element={
               <AdminRequireAuth>
                 <CreateSubcategory />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/subcategories/:categoryId/edit/:subcategoryId"
+            element={
+              <AdminRequireAuth>
+                <EditSubcategory />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/products"
+            element={
+              <AdminRequireAuth>
+                <ShowProducts />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/products/create"
+            element={
+              <AdminRequireAuth>
+                <CreateProducts />
               </AdminRequireAuth>
             }
           />

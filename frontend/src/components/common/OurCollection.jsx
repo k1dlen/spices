@@ -32,7 +32,10 @@ const OurCollection = () => {
         {products &&
           products.map((product) => {
             return (
-              <div className="col-span-1 lg:col-span-4 flex flex-col gap-6">
+              <div
+                className="col-span-1 lg:col-span-4 flex flex-col gap-6"
+                key={product.id}
+              >
                 <div className="overflow-hidden rounded-md">
                   <img
                     src={product.image}

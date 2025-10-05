@@ -39,6 +39,55 @@ class CategoryController extends Controller
     }
 
 
+    public function show($id)
+    {
+        $category = Category::find($id);
+
+        if ($category == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Категория не найдена'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $category
+        ], 200);
+    }
+
+
+    public function update($id, Request $request)
+    {
+        $category = Category::find($id);
+
+        if ($category == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Категория не найдена'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'is_active' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $category->name = $request->name;
+        $category->is_active = $request->is_active;
+        $category->save();
+
+        return response()->json(['status' => 200, 'message' => 'Категория успешно обновлена', 'data' => $category], 200);
+    }
+
+
     public function destroy($id)
     {
 
@@ -47,8 +96,7 @@ class CategoryController extends Controller
         if ($category == null) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Категория не найдена',
-                'data' => []
+                'message' => 'Категория не найдена'
             ], 404);
         }
 

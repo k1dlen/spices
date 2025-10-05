@@ -81,7 +81,7 @@ const Show = () => {
         setCategories(newCategories);
         toast.success(result.message || "Категория успешно удалена");
       } else {
-        toast.error("Ошибка при получении категорий");
+        toast.error("Ошибка при удалении категорий");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
@@ -121,7 +121,7 @@ const Show = () => {
                         Название
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
-                        Статус
+                        Состояние
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
                         Действия

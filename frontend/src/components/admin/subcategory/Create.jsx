@@ -3,12 +3,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import { Layout } from "../../common/Layout";
 import AdminSidebar from "../../common/AdminSidebar";
 import { adminToken, apiUrl } from "../../common/http";
-import Loader from "../../common/Loader";
-import Nostate from "../../common/Nostate";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
-import FeatherIcon from "feather-icons-react";
-import ConfirmModal from "../../common/ConfirmModal";
 import { useForm } from "react-hook-form";
 import CustomSelect from "../../common/CustomSelect";
 
@@ -54,10 +49,12 @@ const Create = () => {
         navigate(-1);
       } else {
         toast.error("Ошибка при создании подкатегории");
+        setDisable(false);
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+      setDisable(false);
     }
   };
 
@@ -89,7 +86,7 @@ const Create = () => {
                   className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
                     errors.name ? "border-red-500" : ""
                   }`}
-                  placeholder="Например: Перец"
+                  placeholder="Название подкатегории"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm">{errors.name.message}</p>

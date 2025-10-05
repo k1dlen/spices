@@ -39,6 +39,54 @@ class SubcategoryController extends Controller
         return response()->json(['status' => 200, 'message' => 'Категория успешно создана', 'data' => $subcategory], 200);
     }
 
+    public function show($id)
+    {
+        $subcategory = Subcategory::find($id);
+
+        if ($subcategory == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Категория не найдена'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $subcategory
+        ], 200);
+    }
+
+
+    public function update($id, Request $request)
+    {
+        $subcategory = Subcategory::find($id);
+
+        if ($subcategory == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Категория не найдена'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'is_active' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $subcategory->name = $request->name;
+        $subcategory->is_active = $request->is_active;
+        $subcategory->save();
+
+        return response()->json(['status' => 200, 'message' => 'Категория успешно обновлена', 'data' => $subcategory], 200);
+    }
+
 
     public function destroy($id)
     {
@@ -48,8 +96,7 @@ class SubcategoryController extends Controller
         if ($subcategory == null) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Категория не найдена',
-                'data' => []
+                'message' => 'Категория не найдена'
             ], 404);
         }
 
