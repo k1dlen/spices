@@ -187,25 +187,27 @@ const Show = () => {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 flex items-center space-x-3">
-                          <Link
-                            to={`/admin/products/edit/${product.id}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-primary hover:text-primary-hover transition-colors"
-                            title="Редактировать"
-                          >
-                            <FeatherIcon icon="edit" className="w-5 h-5" />
-                          </Link>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteClick(product.id);
-                            }}
-                            className="text-red-500 hover:text-red-700 transition-colors"
-                            title="Удалить"
-                          >
-                            <FeatherIcon icon="trash-2" className="w-5 h-5" />
-                          </button>
+                        <td>
+                          <div className="px-4 py-3 flex items-center space-x-3">
+                            <Link
+                              to={`/admin/products/edit/${product.id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-primary hover:text-primary-hover transition-colors"
+                              title="Редактировать"
+                            >
+                              <FeatherIcon icon="edit" className="w-5 h-5" />
+                            </Link>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteClick(product.id);
+                              }}
+                              className="text-red-500 hover:text-red-700 transition-colors"
+                              title="Удалить"
+                            >
+                              <FeatherIcon icon="trash-2" className="w-5 h-5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

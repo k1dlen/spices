@@ -60,7 +60,11 @@ class AccountController extends Controller
 
             $user = User::find(Auth::user()->id);
 
-            $token = $user->createToken('token')->plainTextToken;
+            $token = $user->createToken(
+                'web',
+                [],
+                now()->addDays(30)
+            )->plainTextToken;
 
             return response()->json([
                 'status' => 200,
@@ -74,5 +78,11 @@ class AccountController extends Controller
                 'message' => 'Либо адрес эл.почты, либо пароль неверен'
             ], 401);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => "Выход из аккаунта успешно выполнен!"]);
     }
 }

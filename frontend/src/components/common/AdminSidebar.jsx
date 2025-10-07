@@ -61,7 +61,7 @@ const AdminSidebar = () => {
           </li>
         </ul>
       </div>
-      <div className="lg:hidden mb-6">
+      <div className="lg:hidden">
         <div className="rounded-md shadow-sm">
           <div
             className="list-none p-4 font-semibold text-text-title cursor-pointer"

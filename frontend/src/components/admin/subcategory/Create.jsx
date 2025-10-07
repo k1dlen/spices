@@ -97,8 +97,8 @@ const Create = () => {
                 label="Статус"
                 name="is_active"
                 options={[
-                  { value: "1", label: "Активна" },
-                  { value: "0", label: "Скрыта" },
+                  { value: 1, label: "Активна" },
+                  { value: 0, label: "Скрыта" },
                 ]}
                 value={is_active}
                 onChange={(value) => setValue("is_active", value)}

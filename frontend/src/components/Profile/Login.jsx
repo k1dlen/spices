@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Layout } from "../common/Layout";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../context/Auth";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -23,6 +23,7 @@ const Login = () => {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify(data),
       });
@@ -50,12 +51,16 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      navigate("/profile", { replace: true });
+    }
+  }, [user, navigate]);
+
   return (
     <Layout>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
-        <h1 className="title text-start mb-10">
-          Вход в личный кабинет
-        </h1>
+        <h1 className="title text-start mb-10">Вход в личный кабинет</h1>
         <div className="max-w-lg mx-auto">
           <div className="rounded-md shadow-sm p-6 ">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

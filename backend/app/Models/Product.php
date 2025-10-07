@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Category;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-
-    
-
     protected $appends = ['image_url'];
 
     public function getImageUrlAttribute()
@@ -23,5 +21,10 @@ class Product extends Model
     function product_images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class, 'subcategory_id');
     }
 }

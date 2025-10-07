@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { Layout } from "../../common/Layout";
 import AdminSidebar from "../../common/AdminSidebar";
 import { useForm } from "react-hook-form";
@@ -7,12 +7,16 @@ import { toast } from "react-toastify";
 import { apiUrl, adminToken } from "../../common/http";
 import CustomSelect from "../../common/CustomSelect";
 
-const Create = () => {
+const Edit = () => {
   const [disable, setDisable] = useState(false);
+  const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [gallery, setGallery] = useState([]);
-  const [galleryImages, setGalleryImages] = useState([]);
+  const [productImages, setProductImages] = useState([]);
+  const [defaultImageId, setDefaultImageId] = useState(null);
+  const [tempImages, setTempImages] = useState([]);
+  const { productId } = useParams();
+
   const navigate = useNavigate();
 
   const {
@@ -20,6 +24,7 @@ const Create = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     setError,
     formState: { errors },
   } = useForm({
@@ -34,6 +39,62 @@ const Create = () => {
   const subcategory_id = watch("subcategory_id");
   const status = watch("status");
   const is_active = watch("is_active");
+
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/products/${productId}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${adminToken()}`,
+        },
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        const product = result.data;
+        setProduct(product);
+        reset({
+          name: product.name,
+          description: product.description,
+          short_description: product.short_description,
+          price: product.price,
+          discount: product.discount,
+          subcategory_id: product.subcategory_id,
+          category_id: product.subcategory.category_id,
+          reserve: product.reserve,
+          status: product.status,
+          is_active: product.is_active,
+          grams: product.grams,
+        });
+        if (product.category_id) {
+          await fetchSubcategories(product.category_id);
+        }
+        setProductImages(
+          product.product_images.map((img) => ({
+            id: img.id,
+            url: img.image_url,
+          }))
+        );
+        const images = product.product_images.map((img) => ({
+          id: img.id,
+          url: img.image_url,
+        }));
+        const defaultImg = images.find(
+          (img) => img.url === product.image_url || img.image === product.image
+        );
+        if (defaultImg) {
+          setDefaultImageId(defaultImg.id);
+        }
+        setTempImages([]);
+      } else {
+        toast.error("Ошибка при получении товара");
+      }
+    } catch {
+      console.error("Ошибка сети или парсинга");
+      toast.error("Сервер недоступен. Проверьте подключение.");
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -97,16 +158,13 @@ const Create = () => {
       const result = await res.json();
 
       if (res.ok) {
-        setGallery((prev) => {
-          const newGallery = [...prev, result.data.id];
-          return newGallery;
-        });
-
-        setGalleryImages((prev) => {
-          const newGalleryImages = [...prev, result.data.image_url];
-          return newGalleryImages;
-        });
-
+        setTempImages((prev) => [
+          ...prev,
+          {
+            id: result.data.id,
+            url: result.data.image_url,
+          },
+        ]);
         toast.success("Изображение добавлено");
       } else {
         toast.error("Ошибка при загрузке изображения");
@@ -120,29 +178,61 @@ const Create = () => {
     e.target.value = "";
   };
 
-  const deleteImage = async (id, url) => {
-    setGallery((prev) => prev.filter((imgId) => imgId !== id));
-    setGalleryImages((prev) => prev.filter((imgUrl) => imgUrl !== url));
-
+  const deleteProductImage = async (id) => {
     try {
-      await fetch(`${apiUrl}/temp-images/${id}`, {
+      const res = await fetch(`${apiUrl}/product-images/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${adminToken()}` },
+        headers: {
+          Authorization: `Bearer ${adminToken()}`,
+          Accept: "application/json",
+        },
       });
-      toast.success("Изображение удалено");
+      const result = res.json();
+      if (res.ok) {
+        setProductImages((prev) => prev.filter((img) => img.id !== id));
+        toast.success(result.message || "Изображение удалено");
+      } else {
+        toast.error("При удалении изображения возникла ошибка.");
+      }
+    } catch (err) {
+      toast.error("Ошибка удаления");
+    }
+  };
+
+  const deleteTempImage = async (id) => {
+    try {
+      const res = await fetch(`${apiUrl}/temp-images/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${adminToken()}`,
+          Accept: "application/json",
+        },
+      });
+      const result = res.json();
+      if (res.ok) {
+        setTempImages((prev) => prev.filter((img) => img.id !== id));
+        toast.success(result.message || "Изображение удалено");
+      } else {
+        toast.error("При удалении изображения возникла ошибка.");
+      }
     } catch {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
     }
   };
 
-  const saveProduct = async (data) => {
-    const formData = { ...data, gallery };
+  const updateProduct = async (data) => {
+    const formData = {
+      ...data,
+      product_images_ids: productImages.map((img) => img.id),
+      temp_image_ids: tempImages.map((img) => img.id),
+      default_image_id: defaultImageId,
+    };
 
     setDisable(true);
     try {
-      const res = await fetch(`${apiUrl}/products`, {
-        method: "POST",
+      const res = await fetch(`${apiUrl}/products/${productId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -154,13 +244,13 @@ const Create = () => {
       const result = await res.json();
 
       if (res.ok) {
-        toast.success(result.message || "Товар успешно создан");
+        toast.success(result.message || "Товар успешно обновлен");
         navigate("/admin/products");
       } else if (result.errors) {
         Object.keys(result.errors).forEach((field) => {
           setError(field, { message: result.errors[field][0] });
         });
-        toast.error("Ошибка при создании товара");
+        toast.error("Ошибка при обновлении товара");
       }
     } catch {
       console.error("Ошибка сети или парсинга");
@@ -170,6 +260,7 @@ const Create = () => {
   };
 
   useEffect(() => {
+    fetchProduct();
     fetchCategories();
   }, []);
 
@@ -190,10 +281,12 @@ const Create = () => {
             <AdminSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 shadow-sm p-4 flex flex-col gap-6">
-            <h2 className="subtitle font-playfair mb-6">Создание товара</h2>
+            <h2 className="subtitle font-playfair mb-6">
+              Редактирование товара
+            </h2>
 
             <form
-              onSubmit={handleSubmit(saveProduct)}
+              onSubmit={handleSubmit(updateProduct)}
               className="flex flex-col gap-6"
             >
               <div className="flex flex-col gap-2">
@@ -364,20 +457,70 @@ const Create = () => {
                   className="border p-2 rounded-md"
                 />
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-                  {galleryImages.map((image, index) => (
-                    <div key={index} className="relative aspect-square">
+                  {productImages.map((image, index) => (
+                    <div key={index} className="relative aspect-square group">
                       <img
-                        src={image}
+                        src={image.url}
                         alt=""
                         className="w-full h-full object-cover rounded-md shadow-sm"
                       />
                       <button
                         type="button"
-                        onClick={() => deleteImage(gallery[index], image)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
+                        onClick={() => deleteProductImage(image.id)}
+                        title="Удалить"
+                        className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
                       >
                         ✕
                       </button>
+                      {defaultImageId === image.id ? (
+                        <div
+                          className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                          title="Главное фото"
+                        >
+                          ★
+                        </div>
+                      ) : (
+                        <button
+                          className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                          onClick={() => setDefaultImageId(image.id)}
+                          title="Сделать главным"
+                        >
+                          ☆
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {tempImages.map((image, index) => (
+                    <div key={index} className="relative aspect-square group">
+                      <img
+                        src={image.url}
+                        alt=""
+                        className="w-full h-full object-cover rounded-md shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => deleteTempImage(image.id)}
+                        title="Удалить"
+                        className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
+                      >
+                        ✕
+                      </button>
+                      {defaultImageId === image.id ? (
+                        <div
+                          className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                          title="Главное фото"
+                        >
+                          ★
+                        </div>
+                      ) : (
+                        <button
+                          className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                          onClick={() => setDefaultImageId(image.id)}
+                          title="Сделать главным"
+                        >
+                          ☆
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -452,7 +595,7 @@ const Create = () => {
                   disabled={disable}
                   className="btn btn-primary self-start min-w-32 sm:min-w-0"
                 >
-                  {disable ? "Сохранение..." : "Создать"}
+                  {disable ? "Сохранение..." : "Сохранить"}
                 </button>
               </div>
             </form>
@@ -463,4 +606,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Edit;

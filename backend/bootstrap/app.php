@@ -3,8 +3,10 @@
 use App\Http\Middleware\CheckUser;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,5 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (ThrottleRequestsException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Слишком много попыток. Попробуйте позже.',
+                ], 429);
+            }
+        });
+    })->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('tokens:prune-old')->daily();
+        $schedule->command('temp-images:cleanup')->hourly();
     })->create();
