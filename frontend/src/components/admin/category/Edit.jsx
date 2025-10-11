@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { Layout } from "../../common/Layout";
-import AdminSidebar from "../../common/AdminSidebar";
-import { adminToken, apiUrl } from "../../common/http";
+import { Layout } from "@components/common/Layout";
+import AdminSidebar from "@components/common/AdminSidebar";
+import { adminToken, apiUrl } from "@components/common/http";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import CustomSelect from "../../common/CustomSelect";
+import CustomSelect from "@components/common/CustomSelect";
 
 const Edit = () => {
   const [disable, setDisable] = useState(false);

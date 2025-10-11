@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { apiUrl } from "../common/http";
+import { apiUrl } from "@components/common/http";
 
 export const AuthContext = createContext();
 

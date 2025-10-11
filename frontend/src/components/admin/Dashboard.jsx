@@ -1,6 +1,6 @@
 import React from "react";
-import AdminSidebar from "../common/AdminSidebar";
-import { Layout } from "../common/Layout";
+import AdminSidebar from "@components/common/AdminSidebar";
+import { Layout } from "@components/common/Layout";
 
 const Dashboard = () => {
   return (

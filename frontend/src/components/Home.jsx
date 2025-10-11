@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Layout } from "./common/Layout";
-import Hero from "./common/Hero";
-import OurCollection from "./common/OurCollection";
-import About from "./common/About";
+import { Layout } from "@components/common/Layout";
+import Hero from "@components/common/Hero";
+import OurCollection from "@components/common/OurCollection";
+import About from "@components/common/About";
 
 const Home = () => {
   const location = useLocation();

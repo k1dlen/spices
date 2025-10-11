@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router";
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "@components/context/Auth";
 
 const UserSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

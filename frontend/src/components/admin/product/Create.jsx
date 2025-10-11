@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
-import { Layout } from "../../common/Layout";
-import AdminSidebar from "../../common/AdminSidebar";
+import { Layout } from "@components/common/Layout";
+import AdminSidebar from "@components/common/AdminSidebar";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { apiUrl, adminToken } from "../../common/http";
-import CustomSelect from "../../common/CustomSelect";
+import { apiUrl, adminToken } from "@components/common/http";
+import CustomSelect from "@components/common/CustomSelect";
 
 const Create = () => {
   const [disable, setDisable] = useState(false);
@@ -27,6 +27,7 @@ const Create = () => {
       category_id: "",
       status: "in_stock",
       is_active: 1,
+      is_featured: 0,
     },
   });
 
@@ -34,6 +35,7 @@ const Create = () => {
   const subcategory_id = watch("subcategory_id");
   const status = watch("status");
   const is_active = watch("is_active");
+  const is_featured = watch("is_featured");
 
   const fetchCategories = async () => {
     try {
@@ -438,6 +440,18 @@ const Create = () => {
                 value={is_active}
                 onChange={(value) => setValue("is_active", value)}
                 error={errors.is_active?.message}
+              />
+
+              <CustomSelect
+                label='Отображение в блоке "Наша коллекция"'
+                name="is_featured"
+                options={[
+                  { value: 1, label: "Показывать" },
+                  { value: 0, label: "Не показывать" },
+                ]}
+                value={is_featured}
+                onChange={(value) => setValue("is_featured", value)}
+                error={errors.is_featured?.message}
               />
 
               <div className="flex flex-col sm:flex-row gap-3">

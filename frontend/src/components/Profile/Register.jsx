@@ -1,8 +1,8 @@
 import React from "react";
-import { Layout } from "../common/Layout";
+import { Layout } from "@components/common/Layout";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { apiUrl } from "../common/http";
+import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
 
 const Register = () => {

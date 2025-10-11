@@ -21,8 +21,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('discount')->default(0);
             $table->foreignId('subcategory_id')->nullable()->constrained('subcategories')->nullOnDelete();
             $table->integer('reserve')->default(0);
+            $table->unsignedInteger('sold_count')->default(0);
             $table->enum('status', ['in_stock', 'sold_out', 'on_sale'])->default('in_stock');
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_featured')->default(false);
             $table->integer('grams')->nullable();
             $table->timestamps();
         });

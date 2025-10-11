@@ -1,31 +1,31 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./components/Home";
-import Catalog from "./components/Catalog";
-import Product from "./components/Product";
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout";
-import Profile from "./components/profile/Profile";
-import MyOrders from "./components/profile/MyOrders";
-import Login from "./components/admin/Login";
-import { default as UserLogin } from "./components/profile/Login";
+import Home from "@components/Home";
+import Catalog from "@components/Catalog";
+import Product from "@components/Product";
+import Cart from "@components/Cart";
+import Checkout from "@components/Checkout";
+import Profile from "@components/profile/Profile";
+import MyOrders from "@components/profile/MyOrders";
+import Login from "@components/admin/Login";
+import { default as UserLogin } from "@components/profile/Login";
 import { ToastContainer } from "react-toastify";
-import Dashboard from "./components/admin/Dashboard";
-import { AdminRequireAuth } from "./components/admin/AdminRequireAuth";
-import { RequireAuth } from "./components/profile/RequireAuth";
-import Register from "./components/profile/Register";
+import Dashboard from "@components/admin/Dashboard";
+import { AdminRequireAuth } from "@components/admin/AdminRequireAuth";
+import { RequireAuth } from "@components/profile/RequireAuth";
+import Register from "@components/profile/Register";
 
-import { default as ShowCategories } from "./components/admin/category/Show";
-import { default as CreateCategory } from "./components/admin/category/Create";
-import { default as EditCategory } from "./components/admin/category/Edit";
+import { default as ShowCategories } from "@components/admin/category/Show";
+import { default as CreateCategory } from "@components/admin/category/Create";
+import { default as EditCategory } from "@components/admin/category/Edit";
 
-import { default as ShowSubcategories } from "./components/admin/subcategory/Show";
-import { default as CreateSubcategory } from "./components/admin/subcategory/Create";
-import { default as EditSubcategory } from "./components/admin/subcategory/Edit";
+import { default as ShowSubcategories } from "@components/admin/subcategory/Show";
+import { default as CreateSubcategory } from "@components/admin/subcategory/Create";
+import { default as EditSubcategory } from "@components/admin/subcategory/Edit";
 
-import { default as ShowProducts } from "./components/admin/product/Show";
-import { default as CreateProducts } from "./components/admin/product/Create";
-import { default as EditProduct } from "./components/admin/product/Edit";
+import { default as ShowProducts } from "@components/admin/product/Show";
+import { default as CreateProducts } from "@components/admin/product/Create";
+import { default as EditProduct } from "@components/admin/product/Edit";
 
 function App() {
   return (
@@ -33,10 +33,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*User Routes */}
-          
+
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
-          <Route path="/product/:id" element={<Product />} />
+          <Route path="/product/:productId" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/account/login" element={<UserLogin />} />

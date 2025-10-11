@@ -31,9 +31,10 @@ class ProductController extends Controller
             'discount' => 'nullable|integer|min:0|max:100',
             'reserve' => 'nullable|integer|min:0',
             'status' => 'nullable|in:in_stock,sold_out,on_sale',
-            'is_active' => 'nullable|boolean',
+            'is_active' => 'boolean',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string',
+            'is_featured' => 'boolean',
             'gallery' => 'nullable|array',
             'gallery.*' => 'integer|exists:temp_images,id',
         ]);
@@ -54,6 +55,7 @@ class ProductController extends Controller
         $product->reserve = $request->reserve ?? 0;
         $product->status = $request->status ?? 'in_stock';
         $product->is_active = $request->is_active ?? true;
+        $product->is_featured = $request->is_featured ?? false;
         $product->description = $request->description;
         $product->short_description = $request->short_description;
         $product->save();
@@ -125,7 +127,8 @@ class ProductController extends Controller
             'discount' => 'nullable|integer|min:0|max:100',
             'reserve' => 'nullable|integer|min:0',
             'status' => 'nullable|in:in_stock,sold_out,on_sale',
-            'is_active' => 'nullable|boolean',
+            'is_active' => 'boolean',
+            'is_featured' => 'boolean',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string'
         ]);
@@ -222,6 +225,7 @@ class ProductController extends Controller
         $product->reserve = $request->reserve ?? 0;
         $product->status = $request->status ?? 'in_stock';
         $product->is_active = $request->is_active ?? true;
+        $product->is_featured = $request->is_featured ?? false;
         $product->description = $request->description;
         $product->short_description = $request->short_description;
 

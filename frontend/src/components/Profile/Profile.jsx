@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { Layout } from "../common/Layout";
-import UserSidebar from "../common/UserSidebar";
+import { Layout } from "@components/common/Layout";
+import UserSidebar from "@components/common/UserSidebar";
 
 const Profile = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

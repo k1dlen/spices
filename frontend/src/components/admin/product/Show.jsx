@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Layout } from "../../common/Layout";
-import AdminSidebar from "../../common/AdminSidebar";
-import { adminToken, apiUrl } from "../../common/http";
-import Loader from "../../common/Loader";
-import Nostate from "../../common/Nostate";
+import { Layout } from "@components/common/Layout";
+import AdminSidebar from "@components/common/AdminSidebar";
+import { adminToken, apiUrl } from "@components/common/http";
+import Loader from "@components/common/Loader";
+import Nostate from "@components/common/Nostate";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
-import ConfirmModal from "../../common/ConfirmModal";
+import ConfirmModal from "@components/common/ConfirmModal";
 
 const Show = () => {
   const [products, setProducts] = useState([]);
@@ -112,20 +112,23 @@ const Show = () => {
                 <table className="min-w-full divide-y divide-border-light rounded-md">
                   <thead className="bg-bg-block">
                     <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-16">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-8">
                         ID
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-16">
-                        Фотография
+                        Фото
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title">
                         Название
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
-                        Состояние
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-24">
+                        Кол&nbsp;-&nbsp;во
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
                         Статус
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
+                        Состояние
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
                         Действия
@@ -159,31 +162,34 @@ const Show = () => {
                         <td className="px-4 py-3 text-text-default text-lg">
                           {product.name}
                         </td>
-                        <td className="px-4 py-3">
-                          {product.is_active ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              Активен
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              Скрыт
-                            </span>
-                          )}
+                        <td className="px-4 py-3 text-text-default text-lg">
+                          {product.reserve}
                         </td>
                         <td>
                           {product.status === "in_stock" && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 ml-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-800 ml-2">
                               В наличии
                             </span>
                           )}
                           {product.status === "sold_out" && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800 ml-2">
                               Распродано
                             </span>
                           )}
                           {product.status === "on_sale" && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 ml-2">
-                              Скидка
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800 ml-2">
+                              Скидка {product.discount}%
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {product.is_active ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-800">
+                              Активен
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800">
+                              Скрыт
                             </span>
                           )}
                         </td>
@@ -222,58 +228,64 @@ const Show = () => {
                   key={`product-card-${product.id}`}
                   className="bg-bg-base rounded-md shadow-sm p-4 cursor-pointer transition hover:shadow-md"
                 >
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-text-title font-semibold">
-                      ID: {product.id}
-                    </span>
-                    <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
-                        product.is_active
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {product.is_active ? "Активна" : "Скрыта"}
-                    </span>
+                  <div className="mb-2 text-text-title font-semibold">
+                    ID: {product.id}
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span>
-                      {product.image_url == "" ? (
-                        <img
-                          src="https://placehold.co/48x48"
-                          alt="product_img"
-                          className="w-12"
-                        />
-                      ) : (
-                        <img
-                          src={product.image_url}
-                          alt="product_img"
-                          className="w-12"
-                        />
-                      )}
-                    </span>
-
-                    <span>
-                      {product.status === "in_stock" && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 ml-2">
-                          В наличии
-                        </span>
-                      )}
-                      {product.status === "sold_out" && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
-                          Распродано
-                        </span>
-                      )}
-                      {product.status === "on_sale" && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 ml-2">
-                          Скидка
-                        </span>
-                      )}
-                    </span>
+                  <div className="mb-2">
+                    {product.image_url == "" ? (
+                      <img
+                        src="https://placehold.co/48x48"
+                        alt="product_img"
+                        className="w-12"
+                      />
+                    ) : (
+                      <img
+                        src={product.image_url}
+                        alt="product_img"
+                        className="w-12"
+                      />
+                    )}
                   </div>
                   <div className="text-text-default text-lg font-medium mb-2">
                     {product.name}
                   </div>
+
+                  <div className="mb-4">
+                    <div className="flex flex-col gap-2">
+                      <span
+                        className={` px-2.5 py-0.5 rounded-md text-xs self-start font-medium ${
+                          product.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {product.is_active ? "Активен" : "Скрыт"}
+                      </span>
+
+                      {product.status === "in_stock" && (
+                        <span className=" px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-green-100 text-green-800">
+                          В наличии
+                        </span>
+                      )}
+                      {product.status === "on_sale" && (
+                        <span className="px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-yellow-100 text-yellow-800">
+                          Скидка {product.discount}%
+                        </span>
+                      )}
+                      {product.status === "sold_out" && (
+                        <span className=" px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-red-100 text-red-800">
+                          Распродано
+                        </span>
+                      )}
+
+                      {product.status !== "sold_out" && (
+                        <span className="px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-blue-100 text-blue-800">
+                          Кол-во: {product.reserve}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="flex space-x-3">
                     <Link
                       to={`/admin/products/edit/${product.id}`}

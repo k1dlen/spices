@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout } from "./common/Layout";
+import { Layout } from "@components/common/Layout";
 import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
 

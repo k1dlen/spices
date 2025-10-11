@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { Link } from "react-router";
-import { AdminAuthContext } from "../context/AdminAuth";
+import { AdminAuthContext } from "@components/context/AdminAuth";
 
 const AdminSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

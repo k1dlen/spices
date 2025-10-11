@@ -8,14 +8,23 @@ use App\Http\Controllers\front\AccountController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\admin\SubcategoryController;
-use App\Models\Product;
+use App\Http\Controllers\front\CartController;
+use App\Http\Controllers\front\ProductController as FrontProductController;
+
 
 Route::post('admin/login', [AuthController::class, 'authenticate'])->middleware('throttle:5,1');
 Route::post('login', [AccountController::class, 'authenticate'])->middleware('throttle:5,1');
 Route::post('register', [AccountController::class, 'register'])->middleware('throttle:5,1');
+Route::get('get-products', [FrontProductController::class, 'getProducts']);
+Route::get('get-subcategories', [FrontProductController::class, 'getSubcategories']);
+Route::get('get-categories', [FrontProductController::class, 'getCategories']);
+Route::get('get-product/{id}', [FrontProductController::class, 'getProduct']);
+Route::get('get-random-products/{currentProductId}', [FrontProductController::class, 'getRandomProducts']);
+Route::get('get-our-collection', [FrontProductController::class, 'getOurCollection']);
 
 
 Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
+    Route::resource('cart', CartController::class);
     Route::post('logout', [AccountController::class, 'logout']);
 });
 

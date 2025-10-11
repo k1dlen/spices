@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout } from "../common/Layout";
-import UserSidebar from "../common/UserSidebar";
+import { Layout } from "@components/common/Layout";
+import UserSidebar from "@components/common/UserSidebar";
 import { Link } from "react-router";
 
 const MyOrders = () => {

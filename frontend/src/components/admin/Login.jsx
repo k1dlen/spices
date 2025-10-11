@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Layout } from "../common/Layout";
-import { AdminAuthContext } from "../context/AdminAuth";
+import { Layout } from "@components/common/Layout";
+import { AdminAuthContext } from "@components/context/AdminAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { apiUrl } from "../common/http";
+import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
 
 const Login = () => {

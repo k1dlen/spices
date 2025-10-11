@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Layout } from "../../common/Layout";
-import AdminSidebar from "../../common/AdminSidebar";
-import { adminToken, apiUrl } from "../../common/http";
-import Loader from "../../common/Loader";
-import Nostate from "../../common/Nostate";
+import { Layout } from "@components/common/Layout";
+import AdminSidebar from "@components/common/AdminSidebar";
+import { adminToken, apiUrl } from "@components/common/http";
+import Loader from "@components/common/Loader";
+import Nostate from "@components/common/Nostate";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
-import ConfirmModal from "../../common/ConfirmModal";
+import ConfirmModal from "@components/common/ConfirmModal";
 
 const Show = () => {
   const [categories, setCategories] = useState([]);
@@ -145,11 +145,11 @@ const Show = () => {
                         </td>
                         <td className="px-4 py-3">
                           {category.is_active ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-800">
                               Активна
                             </span>
                           ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800">
                               Скрыта
                             </span>
                           )}
@@ -197,7 +197,7 @@ const Show = () => {
                       ID: {category.id}
                     </span>
                     <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      className={`text-xs font-medium px-2 py-1 rounded-md ${
                         category.is_active
                           ? "bg-green-100 text-green-800"
                           : "bg-red-100 text-red-800"
