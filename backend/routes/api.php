@@ -24,6 +24,9 @@ Route::get('get-our-collection', [FrontProductController::class, 'getOurCollecti
 
 
 Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::resource('cart', CartController::class);
     Route::post('logout', [AccountController::class, 'logout']);
 });

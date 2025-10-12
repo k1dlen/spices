@@ -153,7 +153,7 @@ const Catalog = () => {
                       .map((product) => {
                         return (
                           <div
-                            className="col-span-1 md:col-span-4 flex flex-col gap-6"
+                            className="col-span-1 md:col-span-6 xl:col-span-4 flex flex-col gap-6"
                             key={product.id}
                           >
                             <div className="overflow-hidden rounded-md">
@@ -168,8 +168,23 @@ const Catalog = () => {
                               {product.short_description}
                             </p>
                             <div className="mt-auto flex flex-col gap-6">
-                              <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title">
-                                ₽{product.price}
+                              <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title flex items-center gap-3 truncate">
+                                {product.discount ? (
+                                  <>
+                                    <span className="line-through text-text-title/20">
+                                      ₽{product.price}
+                                    </span>
+                                    <span className="text-title">
+                                      ₽
+                                      {Math.round(
+                                        product.price *
+                                          (1 - product.discount / 100)
+                                      ).toFixed(2)}
+                                    </span>
+                                  </>
+                                ) : (
+                                  <span>₽{product.price}</span>
+                                )}
                               </p>
                               <Link
                                 to={`/product/${product.id}`}

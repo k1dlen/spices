@@ -21,7 +21,7 @@ const OurCollection = () => {
       if (res.ok) {
         setCollectionProducts(result.data);
       } else {
-        toast.error("Ошибка при получении категорий");
+        toast.error("Ошибка при получении коллекции");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
@@ -57,9 +57,11 @@ const OurCollection = () => {
                 </p>
                 <Link
                   to={`/product/${product.id}`}
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
+                  onClick={() => {
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 150);
+                  }}
                   className="btn btn-primary text-center self-start mt-auto"
                 >
                   Подробнее

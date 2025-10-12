@@ -21,7 +21,11 @@ const Hero = () => {
             <Link
               to={`catalog`}
               className="btn btn-primary  w-auto"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }, 150);
+              }}
             >
               Открыть каталог
             </Link>

@@ -13,20 +13,23 @@ class CartController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $cart = CartItem::with('product')->where('user_id', $user->id)->get();
-        return response()->json(['status' => 200, 'data' => $cart]);
+        $cart = CartItem::with('product')
+            ->where('user_id', auth('sanctum')->id())
+            ->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $cart
+        ], 200);
     }
 
     public function store(Request $request)
     {
-        $user = Auth::user();
         $request->validate([
             'product_id' => [
                 'required',
                 Rule::exists('products', 'id')
                     ->where('is_active', true)
-                    ->where('status', 'in_stock'),
+                    ->where('status', '!=', 'sold_out'),
             ],
             'quantity' => 'required|integer|min:1',
         ]);
@@ -34,7 +37,7 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
 
         $cartItem = CartItem::firstOrCreate([
-            'user_id' => $user->id,
+            'user_id' => auth('sanctum')->id(),
             'product_id' => $request->product_id,
         ], ['quantity' => 0]);
 
@@ -45,46 +48,45 @@ class CartController extends Controller
             $cartItem->increment('quantity', $incrementBy);
             $cartItem->refresh();
         }
+        $cartItem->load('product');
 
         return response()->json([
             'status' => 200,
             'data' => $cartItem,
-            'can_add_more' => $cartItem->quantity < $product->reserve,
-            'max_available' => $product->reserve - $cartItem->quantity
-        ]);
+        ], 200);
     }
 
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
-
         $request->validate(['quantity' => 'required|integer|min:1']);
 
-        $cartItem = CartItem::where('user_id', $user->id)->where('id', $id)->firstOrFail();
+        $cartItem = CartItem::where('user_id', auth('sanctum')->id())->where('id', $id)->firstOrFail();
 
-
-
-        $product = Product::findOrFail($cartItem->product_id);
+        $product = Product::where('id', $cartItem->product_id)
+            ->where('is_active', true)
+            ->where('status', '!=', 'sold_out')
+            ->firstOrFail();
 
         $newQuantity = $request->quantity;
 
         $cartItem->quantity = min($newQuantity, $product->reserve);
         $cartItem->save();
 
+        $cartItem->load('product');
         return response()->json([
             'status' => 200,
             'data' => $cartItem,
-            'can_add_more' => $cartItem->quantity < $product->reserve,
-            'max_available' => $product->reserve - $cartItem->quantity
-        ]);
+        ], 200);
     }
 
     public function destroy($id)
     {
-        $user = Auth::user();
-        $cartItem = CartItem::where('user_id', $user->id)->where('id', $id)->firstOrFail();
+        $cartItem = CartItem::where('user_id', auth('sanctum')->id())->where('id', $id)->firstOrFail();
         $cartItem->delete();
 
-        return response()->json(['status' => 200, 'message' => 'Item removed']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Товар удален из корзины'
+        ], 200);
     }
 }

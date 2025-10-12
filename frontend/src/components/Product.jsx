@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Layout } from "@components/common/Layout";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,14 +9,26 @@ import { Link } from "react-router";
 import { toast } from "react-toastify";
 import Loader from "@components/common/Loader";
 import Nostate from "@components/common/Nostate";
+import { CartContext } from "@components/context/Cart";
+import { AuthContext } from "./context/Auth";
 
 const Product = () => {
   const { productId } = useParams();
+
+  const { user } = useContext(AuthContext);
+
+  const { cartData, addToCart, updateCartItem, deleteCartItem, getQuantity } =
+    useContext(CartContext);
+
+  const [cartItemId, setCartItemId] = useState(null);
   const [product, setProduct] = useState([]);
   const [loader, setLoader] = useState(false);
   const [randomProducts, setRandomProducts] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [inCart, setInCart] = useState(false);
+
   const isSingle = productImages.length <= 1;
   const thumbsWidthClass =
     productImages.length === 2
@@ -79,10 +91,75 @@ const Product = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    if (inCart) {
+      if (quantity <= 0) {
+        deleteCartItem(product.id);
+      } else {
+        updateCartItem(product.id, quantity);
+      }
+    } else {
+      addToCart(product);
+    }
+  };
+
+  const increment = () => {
+    if (quantity < product?.reserve) {
+      const newQuantity = quantity + 1;
+      setQuantity(newQuantity);
+
+      if (inCart) {
+        updateCartItem(cartItemId, newQuantity);
+      }
+    }
+  };
+
+  const decrement = () => {
+    const newQuantity = quantity - 1;
+
+    if (newQuantity > 0) {
+      setQuantity(newQuantity);
+
+      if (inCart && cartItemId) {
+        updateCartItem(cartItemId, newQuantity);
+      }
+    } else {
+      if (inCart && cartItemId) {
+        deleteCartItem(cartItemId);
+      }
+      setInCart(false);
+      setQuantity(1);
+    }
+  };
+
   useEffect(() => {
     fetchProduct();
     fetchRandomProducts();
   }, [productId]);
+
+  useEffect(() => {
+    if (!product) return;
+
+    let item = null;
+
+    if (user) {
+      item = cartData.find(
+        (i) => i.product_id === product.id || i.id === product.id
+      );
+    } else {
+      item = cartData.find((i) => i.product?.product_id === product.id);
+    }
+
+    if (item) {
+      setInCart(true);
+      setQuantity(item.quantity);
+      setCartItemId(item.id || item.product?.product_id);
+    } else {
+      setInCart(false);
+      setQuantity(1);
+      setCartItemId(null);
+    }
+  }, [product, cartData, user]);
 
   return (
     <Layout>
@@ -148,16 +225,65 @@ const Product = () => {
               </div>
               <div className="col-span-1 lg:col-span-9 flex flex-col gap-6">
                 <h1 className="title">{product.name}</h1>
-                <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title">
-                  ₽{product.price}
+                <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title flex items-center gap-3">
+                  {product.discount ? (
+                    <>
+                      <span className="line-through text-text-title/20">
+                        ₽{product.price}
+                      </span>
+                      <span className="text-title">
+                        ₽
+                        {Math.round(
+                          product.price * (1 - product.discount / 100)
+                        ).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <span>₽{product.price}</span>
+                  )}
                 </p>
+
                 <p className="text-text-default text-lg sm:text-xl md:text-2xl">
                   {product.description ||
                     "Информация о продукте скоро появится."}
                 </p>
-                <Link className="btn btn-primary text-center self-start">
-                  Добавить в корзину
-                </Link>
+                {inCart ? (
+                  <div className="btn inline-flex items-center justify-center gap-6 self-start select-none px-5 py-2">
+                    <span
+                      onClick={decrement}
+                      className={`text-3xl font-light transition-opacity hover:opacity-70 cursor-pointer`}
+                    >
+                      −
+                    </span>
+
+                    <span className="text-2xl font-semibold w-8 text-center">
+                      {quantity}
+                    </span>
+
+                    <span
+                      onClick={increment}
+                      className={`text-3xl font-light transition-opacity ${
+                        quantity < product.reserve
+                          ? "cursor-pointer hover:opacity-70"
+                          : "opacity-40 cursor-not-allowed"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={product.reserve <= 0}
+                    className={`btn self-start ${
+                      product.reserve <= 0 ? "btn-disabled" : "btn-primary"
+                    }`}
+                  >
+                    {product.reserve <= 0
+                      ? "Нет в наличии"
+                      : "Добавить в корзину"}
+                  </button>
+                )}
               </div>
             </div>
 

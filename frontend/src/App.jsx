@@ -26,11 +26,13 @@ import { default as EditSubcategory } from "@components/admin/subcategory/Edit";
 import { default as ShowProducts } from "@components/admin/product/Show";
 import { default as CreateProducts } from "@components/admin/product/Create";
 import { default as EditProduct } from "@components/admin/product/Edit";
+import RouteTokenChecker from "./components/common/RouteTokenChecker";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <RouteTokenChecker />
         <Routes>
           {/*User Routes */}
 

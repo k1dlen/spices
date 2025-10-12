@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
+import { CartContext } from "@components/context/Cart";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { getQuantity } = useContext(CartContext);
+  const quantity = getQuantity();
   return (
     <header className="border-border-light border-b-1 bg-bg-block px-1 sm:px-0">
       <div className="container mx-auto py-5">
@@ -172,12 +175,17 @@ const Header = () => {
                 className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-300"
               />
             </Link>
-            <Link to={`/cart`}>
+            <Link to={`/cart`} className="relative">
               <FeatherIcon
                 icon="shopping-cart"
                 strokeWidth={2.3}
                 className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-300"
               />
+              {quantity > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary-hover text-text-alt text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {quantity}
+                </span>
+              )}
             </Link>
 
             <button

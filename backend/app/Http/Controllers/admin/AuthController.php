@@ -25,7 +25,12 @@ class AuthController extends Controller
             $user = User::find(Auth::user()->id);
 
             if ($user->role == 'admin') {
-                $token = $user->createToken('token')->plainTextToken;
+
+                $token = $user->createToken(
+                    'web',
+                    [],
+                    now()->addDays(30)
+                )->plainTextToken;
 
                 return response()->json([
                     'status' => 200,

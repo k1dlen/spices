@@ -46,9 +46,11 @@ const Footer = () => {
               <li>
                 <Link
                   to={`/catalog`}
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
+                  onClick={() => {
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 150);
+                  }}
                   className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
                 >
                   Каталог
@@ -126,7 +128,7 @@ const Footer = () => {
       </div>
       <div className="border-t border-border-light"></div>
       <div className="container mx-auto py-7">
-        <div className="py-6 text-sm text-center">
+        <div className="py-6 text-sm text-start md:text-center">
           © 2025 Все права защищены.
         </div>
       </div>
