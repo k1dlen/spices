@@ -102,6 +102,10 @@ const Catalog = () => {
     <>
       <Layout>
         <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+          {products.length == 0 &&
+            loader == true &&
+            subcategories.length == 0 &&
+            categories.length == 0 && <Loader></Loader>}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4  items-start">
             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 ">
               {categories.map((category) => (
@@ -139,7 +143,9 @@ const Catalog = () => {
               ))}
             </div>
             <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 mt-4 sm:mt-6 lg:mt-0">
-              {loader == true && <Loader />}
+              {loader == true &&
+                categories.length > 0 &&
+                subcategories.length > 0 && <Loader></Loader>}
               {loader == false && products.length == 0 && (
                 <div className="shadow-sm">
                   <Nostate text="Товаров не найдено" />

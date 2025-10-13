@@ -1,20 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Layout } from "@components/common/Layout";
 import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
 import { CartContext } from "@components/context/Cart";
 import Loader from "@components/common/Loader";
-import Nostate from "@components/common/Nostate";
 
 const Cart = () => {
   const {
     cartData,
     updateCartItem,
     deleteCartItem,
-    getQuantity,
     subTotal,
     getItemTotal,
     totalDiscount,
+    shippingCost,
     grandTotal,
     loader,
   } = useContext(CartContext);
@@ -26,6 +25,19 @@ const Cart = () => {
       updateCartItem(id, newQty);
     }
   };
+
+  const [open, setOpen] = useState(false);
+  const tooltipRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Layout>
@@ -45,7 +57,6 @@ const Cart = () => {
         )}
         {cartData.length > 0 && (
           <div>
-            {" "}
             <h1 className="title text-start mb-10">Корзина</h1>
             <div className="hidden lg:block">
               <table className="w-full border-collapse">
@@ -149,7 +160,7 @@ const Cart = () => {
                           </td>
 
                           <td className="py-6 text-center align-top xl:text-4xl lg:text-3xl">
-                            ₽{getItemTotal(item)}
+                            ₽{getItemTotal(item).toFixed(2)}
                           </td>
                           <td className="py-6 text-right align-top">
                             <button
@@ -177,7 +188,7 @@ const Cart = () => {
                       Сумма
                     </span>
                     <span className="text-text-title font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-                      ₽{subTotal()}
+                      ₽{subTotal().toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between mb-2">
@@ -185,7 +196,45 @@ const Cart = () => {
                       Скидка
                     </span>
                     <span className="text-text-title subtitle">
-                      ₽{totalDiscount()}
+                      ₽{totalDiscount().toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span
+                      className="relative flex items-center !text-text-default !font-normal subtitle group cursor-pointer"
+                      onClick={() => setOpen((prev) => !prev)}
+                      ref={tooltipRef}
+                    >
+                      Доставка
+                      <span className="ml-1 mb-2 relative">
+                        <FeatherIcon
+                          icon="info"
+                          strokeWidth={2.3}
+                          className="w-5 h-auto text-text-default"
+                        />
+
+                        <span
+                          className={`
+                            absolute bottom-full z-50 mb-1 rounded-sm bg-primary px-2 py-1 text-xs text-bg-base transition-opacity duration-200
+                            ${
+                              open
+                                ? "opacity-100 visible"
+                                : "opacity-0 invisible"
+                            } 
+                            group-hover:opacity-100 group-hover:visible
+                                                  
+                            max-w-[calc(100vw-8px)]
+                            left-1/2 transform -translate-x-1/2 break-words
+                          `}
+                        >
+                          Стоимость доставки фиксированная — {shippingCost()} ₽.
+                          <span className="absolute top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-primary"></span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span className="text-text-title subtitle">
+                      ₽{shippingCost().toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between border-t border-text-default/20 pt-2 font-semibold">
@@ -193,7 +242,7 @@ const Cart = () => {
                       Итого
                     </span>
                     <span className="font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-title">
-                      ₽{grandTotal()}
+                      ₽{grandTotal().toFixed(2)}
                     </span>
                   </div>
 
@@ -254,7 +303,7 @@ const Cart = () => {
                       Количество: x {item.quantity}
                     </p>
                     <p className="text-text-title text-xl">
-                      Итог: ₽{getItemTotal()}
+                      Итог: ₽{getItemTotal(item).toFixed(2)}
                     </p>
                   </div>
 
@@ -277,13 +326,49 @@ const Cart = () => {
                 <div>
                   <span className="text-text-default text-xl">Сумма:</span>
                   <span className="text-text-title font-semibold text-xl ml-2">
-                    ₽{subTotal()}
+                    ₽{subTotal().toFixed(2)}
                   </span>
                 </div>
                 <div>
                   <span className="text-text-default text-xl">Скидка:</span>
                   <span className="text-text-title font-semibold text-xl ml-2">
-                    ₽{totalDiscount()}
+                    ₽{totalDiscount().toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span
+                    className="relative flex items-center text-xl cursor-pointer text-text-default group"
+                    onClick={() => setOpen((prev) => !prev)}
+                    ref={tooltipRef}
+                  >
+                    Доставка
+                    <span className="mb-2 ml-[2px] relative">
+                      <FeatherIcon
+                        icon="info"
+                        strokeWidth={2}
+                        className="w-4 h-auto text-text-default"
+                      />
+
+                      <span
+                        className={`
+                          absolute bottom-full z-50 mb-1 rounded-sm bg-primary px-2 py-1 text-xs text-bg-base transition-opacity duration-200
+                          ${
+                            open ? "opacity-100 visible" : "opacity-0 invisible"
+                          } 
+                          group-hover:opacity-100 group-hover:visible
+                          max-w-[calc(100vw-8px)]
+                          left-1/2 transform -translate-x-1/2 break-words
+                        `}
+                      >
+                        Стоимость доставки фиксированная — {shippingCost()} ₽.
+                        <span className="absolute top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-primary"></span>
+                      </span>
+                    </span>
+                    :
+                  </span>
+
+                  <span className="text-text-title font-semibold text-xl ml-2">
+                    ₽{shippingCost().toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -294,7 +379,7 @@ const Cart = () => {
                     Сумма
                   </span>
                   <span className="text-text-title font-semibold text-xl md:text-2xl">
-                    ₽{subTotal()}
+                    ₽{subTotal().toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between mb-2">
@@ -302,7 +387,42 @@ const Cart = () => {
                     Скидка
                   </span>
                   <span className="text-text-title font-semibold text-xl md:text-2xl">
-                    ₽{totalDiscount()}
+                    ₽{totalDiscount().toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span
+                    className="relative flex items-center !text-text-default !font-normal subtitle cursor-pointer group"
+                    onClick={() => setOpen((prev) => !prev)}
+                    ref={tooltipRef}
+                  >
+                    Доставка
+                    <span className="ml-1 mb-2 relative">
+                      <FeatherIcon
+                        icon="info"
+                        strokeWidth={2.3}
+                        className="w-5 h-auto text-text-default"
+                      />
+
+                      <span
+                        className={`
+                          absolute bottom-full z-50 mb-1 rounded-sm bg-primary px-2 py-1 text-xs text-bg-base transition-opacity duration-200
+                          ${
+                            open ? "opacity-100 visible" : "opacity-0 invisible"
+                          } 
+                          group-hover:opacity-100 group-hover:visible
+                                              
+                          max-w-[calc(100vw-8px)]
+                          left-1/2 transform -translate-x-1/2 break-words
+                        `}
+                      >
+                        Стоимость доставки фиксированная — {shippingCost()} ₽.
+                        <span className="absolute top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-primary"></span>
+                      </span>
+                    </span>
+                  </span>
+                  <span className="text-text-title font-semibold text-xl md:text-2xl">
+                    ₽{shippingCost().toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -313,7 +433,7 @@ const Cart = () => {
                     Итого:
                   </span>
                   <span className="text-text-title font-semibold text-xl ml-2">
-                    ₽{grandTotal()}
+                    ₽{grandTotal().toFixed(2)}
                   </span>
                 </div>
                 <div className="hidden sm:flex justify-between">
@@ -321,7 +441,7 @@ const Cart = () => {
                     Итого
                   </span>
                   <span className="text-text-title font-semibold text-xl md:text-2xl">
-                    ₽{grandTotal()}
+                    ₽{grandTotal().toFixed(2)}
                   </span>
                 </div>
               </div>

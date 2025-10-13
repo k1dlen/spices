@@ -1,38 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Layout } from "@components/common/Layout";
+import { CartContext } from "@components/context/Cart";
+import Loader from "@components/common/Loader";
 
 const Checkout = () => {
-  const cartItems = [
-    {
-      id: 1,
-      image: "/src/assets/images/groundTurmeric.png",
-      name: "Куркума молотая",
-      weight: "100",
-      price: 130.0,
-      quantity: 2,
-      total: 260.0,
-    },
-    {
-      id: 2,
-      image: "/src/assets/images/driedTumeric.png",
-      name: "Куркума в корне",
-      weight: "100",
-      price: 100.0,
-      quantity: 1,
-      total: 100.0,
-    },
-  ];
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-  const discount = 0;
-  const total = subtotal - discount;
+  const { cartData, grandTotal, loader } = useContext(CartContext);
 
   return (
     <Layout>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start mb-10">Оформление заказа</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-          <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 shadow-sm rounded-md">
+          <div className="col-span-1 lg:col-span-8 xl:col-span-9 flex flex-col gap-6 shadow-sm rounded-md">
             <div className="p-6">
               <h2 className="subtitle font-playfair mb-6">Контактные данные</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 items-start">
@@ -133,38 +112,39 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 shadow-sm rounded-md">
+          <div className="col-span-1 lg:col-span-4 xl:col-span-3 flex flex-col gap-6 shadow-sm rounded-md">
             <div className="p-6">
               <h3 className="subtitle font-playfair mb-4">Ваш заказ</h3>
               <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <div key={item.id}>
+                {loader == true && <Loader />}
+                {cartData.map((item) => (
+                  <div key={item.product.id}>
                     <div className="sm:hidden flex flex-col items-start gap-2">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.product.image_url}
+                        alt={item.product.name}
                         className="w-20 h-auto object-contain rounded-md"
                       />
                       <h4 className="text-text-title font-semibold text-lg">
-                        {item.name}
+                        {item.product.name}
                       </h4>
                       <p className="text-text-default text-lg">
-                        {item.quantity} × {item.price.toFixed(2)}
+                        {item.quantity} × {item.product.price}
                       </p>
                     </div>
 
                     <div className="hidden sm:flex items-start gap-4">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.product.image_url}
+                        alt={item.product.name}
                         className="w-20 h-auto object-contain rounded-md flex-shrink-0"
                       />
                       <div className="flex-1">
                         <h4 className="text-text-title font-semibold text-lg lg:text-xl xl:text-2xl">
-                          {item.name}
+                          {item.product.name}
                         </h4>
                         <p className="text-text-default text-lg lg:text-xl xl:text-2xl mt-1">
-                          {item.quantity} × {item.price.toFixed(2)}
+                          {item.quantity} × {item.product.price}
                         </p>
                       </div>
                     </div>
@@ -180,7 +160,7 @@ const Checkout = () => {
                     Итого:
                   </span>
                   <span className="text-text-title font-semibold text-lg lg:text-xl xl:text-2xl">
-                    ₽{total.toFixed(2)}
+                    ₽{grandTotal().toFixed(2)}
                   </span>
                 </div>
               </div>

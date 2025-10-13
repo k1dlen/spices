@@ -9,6 +9,7 @@ export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
   const [cartData, setCartData] = useState([]);
+  const [shipping, setShipping] = useState(200);
 
   const mergeLocalCartToServer = async () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -306,6 +307,11 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const shippingCost = () => {
+    const subtotal = subTotal();
+    return subtotal >= 1000 ? 0 : shipping;
+  };
+
   const totalDiscount = () =>
     cartData.reduce((sum, item) => {
       const discountAmount =
@@ -315,7 +321,7 @@ export const CartProvider = ({ children }) => {
           : 0;
       return sum + discountAmount;
     }, 0);
-  const grandTotal = () => subTotal() - totalDiscount();
+  const grandTotal = () => subTotal() - totalDiscount() + shippingCost();
 
   return (
     <CartContext.Provider
@@ -327,9 +333,9 @@ export const CartProvider = ({ children }) => {
         getQuantity,
         getItemTotal,
         subTotal,
+        shippingCost,
         totalDiscount,
         grandTotal,
-        mergeLocalCartToServer,
         loader,
       }}
     >

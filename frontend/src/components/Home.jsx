@@ -9,26 +9,34 @@ const Home = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const { hash } = location;
+    if (!hash) return;
+
+    const element = document.querySelector(hash);
+    if (!element) return;
+
     const scrollToAnchor = () => {
-      const { hash } = location;
-      if (hash) {
-        const element = document.querySelector(hash);
-        if (element) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              element.scrollIntoView({ behavior: "smooth" });
-              window.history.replaceState(
-                null,
-                "",
-                window.location.pathname + window.location.search
-              );
-            });
-          });
-        }
-      }
+      element.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     };
 
     scrollToAnchor();
+    const resizeObserver = new ResizeObserver(() => {
+      scrollToAnchor();
+    });
+
+    resizeObserver.observe(document.body);
+
+    const timeout = setTimeout(() => resizeObserver.disconnect(), 2000);
+
+    return () => {
+      clearTimeout(timeout);
+      resizeObserver.disconnect();
+    };
   }, [location]);
 
   return (
