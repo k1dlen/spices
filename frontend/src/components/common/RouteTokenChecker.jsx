@@ -20,8 +20,8 @@ const RouteTokenChecker = () => {
         const res = await fetch(`${apiUrl}/user`, {
           method: "GET",
           headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -29,7 +29,6 @@ const RouteTokenChecker = () => {
           toast.info("Сессия истекла. Пожалуйста, войдите снова.");
           logout();
         }
-
       } catch (err) {
         console.warn("Не удалось проверить токен:", err);
       }

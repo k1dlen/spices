@@ -291,6 +291,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const clearCart = () => {
+    setCartData([]);
+  };
+
   const getItemTotal = (item) => {
     if (!item || !item.product) return 0;
     return +(item.product.price * item.quantity).toFixed(2);
@@ -308,8 +312,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const shippingCost = () => {
-    const subtotal = subTotal();
-    return subtotal >= 1000 ? 0 : shipping;
+    return shipping;
   };
 
   const totalDiscount = () =>
@@ -337,6 +340,7 @@ export const CartProvider = ({ children }) => {
         totalDiscount,
         grandTotal,
         loader,
+        clearCart,
       }}
     >
       {children}

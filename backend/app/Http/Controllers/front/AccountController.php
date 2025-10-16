@@ -80,6 +80,23 @@ class AccountController extends Controller
         }
     }
 
+    public function getUserDetail(Request $request)
+    {
+        $user = User::find($request->user()->id);
+
+        if ($user == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Пользователь не найден'
+            ], 404);
+        } else {
+            return response()->json([
+                'status' => 200,
+                'data' => $user
+            ], 200);
+        }
+    }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

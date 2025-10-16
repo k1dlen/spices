@@ -40,10 +40,17 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/account/login" element={<UserLogin />} />
           <Route path="/account/register" element={<Register />} />
 
+          <Route
+            path="/checkout"
+            element={
+              <RequireAuth>
+                <Checkout />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/profile"
             element={

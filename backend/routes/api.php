@@ -8,6 +8,8 @@ use App\Http\Controllers\front\AccountController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\admin\SubcategoryController;
+use App\Http\Controllers\admin\OrderController as AdminOrderController;
+use App\Http\Controllers\front\OrderController as FrontOrderController;
 use App\Http\Controllers\front\CartController;
 use App\Http\Controllers\front\ProductController as FrontProductController;
 
@@ -27,6 +29,8 @@ Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::post('/orders', [FrontOrderController::class, 'store']);
+    Route::get('/getUserDetail', [AccountController::class, 'getUserDetail']);
     Route::resource('cart', CartController::class);
     Route::post('logout', [AccountController::class, 'logout']);
 });
@@ -41,4 +45,8 @@ Route::group(['middleware' => ['auth:sanctum', 'checkAdminRole']], function () {
     Route::delete('temp-images/{id}', [TempImageController::class, 'destroy']);
     Route::delete('product-images/{id}', [ProductController::class, 'deleteProductImage']);
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::get('orders', [AdminOrderController::class, 'index']);
+    Route::get('orders/{id}', [AdminOrderController::class, 'show']);
+    Route::put('orders/{id}', [AdminOrderController::class, 'update']);
 });
