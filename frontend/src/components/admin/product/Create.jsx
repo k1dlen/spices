@@ -233,6 +233,9 @@ const Create = () => {
               />
 
               <CustomSelect
+                {...register("subcategory_id", {
+                  required: "Поле подкатегории является обязательным",
+                })}
                 label="Подкатегория"
                 name="subcategory_id"
                 options={subcategories.map((sub) => ({

@@ -26,6 +26,9 @@ import { default as EditSubcategory } from "@components/admin/subcategory/Edit";
 import { default as ShowProducts } from "@components/admin/product/Show";
 import { default as CreateProducts } from "@components/admin/product/Create";
 import { default as EditProduct } from "@components/admin/product/Edit";
+
+import { default as ShowOrders } from "@components/admin/orders/Show";
+
 import RouteTokenChecker from "./components/common/RouteTokenChecker";
 
 function App() {
@@ -140,6 +143,14 @@ function App() {
             element={
               <AdminRequireAuth>
                 <EditProduct />
+              </AdminRequireAuth>
+            }
+          />
+          <Route
+            path="admin/orders"
+            element={
+              <AdminRequireAuth>
+                <ShowOrders />
               </AdminRequireAuth>
             }
           />

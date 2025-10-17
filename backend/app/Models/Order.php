@@ -20,6 +20,7 @@ class Order extends Model
         'subtotal',
         'discount',
         'shipping',
+        'cancellation_reason',
         'payment_method',
         'status'
     ];

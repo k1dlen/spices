@@ -14,10 +14,15 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::orderBy('created_at', 'DESC')->with(['product_images'])->get();
+        $product = Product::orderBy('created_at', 'DESC')->with(['product_images'])->paginate(10);
         return response()->json([
             'status' => 200,
-            'data' => $product
+            'data' => $product->items(),
+            'meta' => [
+                'current_page' => $product->currentPage(),
+                'last_page' => $product->lastPage(),
+                'total' => $product->total()
+            ]
         ], 200);
     }
 

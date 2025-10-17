@@ -36,7 +36,7 @@ const AdminSidebar = () => {
           </li>
           <li className="border-b border-text-default mb-2">
             <Link
-              to="/"
+              to="/admin/orders"
               className="block px-2.5 py-2.5 text-text-default text-lg lg:text-xl xl:text-2xl hover:text-primary transition-colors"
             >
               Заказы
@@ -101,7 +101,7 @@ const AdminSidebar = () => {
               </li>
               <li>
                 <Link
-                  to="/admin/dashboard"
+                  to="/admin/orders"
                   className="text-text-default hover:text-primary"
                 >
                   Заказы
