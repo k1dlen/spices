@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Layout } from "@components/common/Layout";
 import AdminSidebar from "@components/common/AdminSidebar";
 import { adminToken, apiUrl } from "@components/common/http";
 import Loader from "@components/common/Loader";
@@ -34,14 +33,14 @@ const Show = () => {
 
       if (res.ok) {
         setCategories(result.data);
-
-        setLoader(false);
       } else {
         toast.error("Ошибка при получении категорий");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -94,7 +93,7 @@ const Show = () => {
   }, []);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start">Категории</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
@@ -251,7 +250,7 @@ const Show = () => {
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
-    </Layout>
+    </>
   );
 };
 

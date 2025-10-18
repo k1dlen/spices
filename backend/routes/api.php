@@ -29,14 +29,18 @@ Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post('/orders', [FrontOrderController::class, 'store']);
+    Route::post('/orders', [FrontOrderController::class, 'store'])->middleware('throttle:5,1');
     Route::get('/getUserDetail', [AccountController::class, 'getUserDetail']);
+    Route::put('update-user',  [AccountController::class, 'update'])->middleware('throttle:5,1');
     Route::resource('cart', CartController::class);
     Route::post('logout', [AccountController::class, 'logout']);
 });
 
 
 Route::group(['middleware' => ['auth:sanctum', 'checkAdminRole']], function () {
+    Route::get('/admin', function (Request $request) {
+        return $request->user();
+    });
     Route::resource('categories', CategoryController::class);
     Route::resource('subcategories', SubcategoryController::class);
     Route::get('subcategories/category/{id}', [SubcategoryController::class, 'indexByCategory']);

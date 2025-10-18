@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
-import { Layout } from "@components/common/Layout";
 import AdminSidebar from "@components/common/AdminSidebar";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -184,7 +183,7 @@ const Create = () => {
   }, [category_id]);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start">Товары</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
@@ -192,7 +191,7 @@ const Create = () => {
             <AdminSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 shadow-sm p-4 flex flex-col gap-6">
-            <h2 className="subtitle font-playfair mb-6">Создание товара</h2>
+            <h2 className="subtitle font-playfair">Создание товара</h2>
 
             <form
               onSubmit={handleSubmit(saveProduct)}
@@ -476,7 +475,7 @@ const Create = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "@components/context/Auth";
+import FeatherIcon from "feather-icons-react";
 
 const UserSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,10 +40,17 @@ const UserSidebar = () => {
       <div className="lg:hidden">
         <div className="rounded-md shadow-sm">
           <div
-            className="list-none p-4 font-semibold text-text-title cursor-pointer"
+            className="flex list-none p-4 font-semibold text-text-title cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             Меню аккаунта
+            <FeatherIcon
+              icon="chevron-down"
+              className={`transition-transform duration-300 ease-in-out ${
+                isMenuOpen ? "rotate-180" : "rotate-0"
+              }`}
+              strokeWidth={2.3}
+            />
           </div>
           <div
             className={`overflow-hidden transition-all duration-300 ease-in-out ${

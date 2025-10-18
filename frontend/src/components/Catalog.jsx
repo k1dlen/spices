@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { Layout } from "@components/common/Layout";
 import { apiUrl } from "@components/common/http";
 import Loader from "@components/common/Loader";
 import Nostate from "@components/common/Nostate";
@@ -79,13 +78,14 @@ const Catalog = () => {
 
       if (res.ok) {
         setProducts(result.data);
-        setLoader(false);
       } else {
         toast.error("Ошибка при получении категорий");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -100,7 +100,7 @@ const Catalog = () => {
 
   return (
     <>
-      <Layout>
+      <>
         <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
           {products.length == 0 &&
             loader == true &&
@@ -171,7 +171,7 @@ const Catalog = () => {
                             </div>
                             <h2 className="title">{product.name}</h2>
                             <p className="text-start text-lg sm:text-xl md:text-2xl text-text-default">
-                              {product.short_description}
+                              {product.short_description}, {product.grams}г.
                             </p>
                             <div className="mt-auto flex flex-col gap-6">
                               <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title flex items-center gap-3 truncate">
@@ -213,7 +213,7 @@ const Catalog = () => {
             </div>
           </div>
         </div>
-      </Layout>
+      </>
     </>
   );
 };

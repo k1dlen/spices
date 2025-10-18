@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { Layout } from "@components/common/Layout";
 import AdminSidebar from "@components/common/AdminSidebar";
 import { useForm } from "react-hook-form";
+import Loader from "@components/common/Loader";
+import Nostate from "@components/common/Nostate";
 import { toast } from "react-toastify";
 import { apiUrl, adminToken } from "@components/common/http";
 import CustomSelect from "@components/common/CustomSelect";
 
 const Edit = () => {
   const [disable, setDisable] = useState(false);
-  const [product, setProduct] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [product, setProduct] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [productImages, setProductImages] = useState([]);
@@ -43,6 +45,7 @@ const Edit = () => {
   const is_featured = watch("is_featured");
 
   const fetchProduct = async () => {
+    setLoader(true);
     try {
       const res = await fetch(`${apiUrl}/products/${productId}`, {
         headers: {
@@ -96,6 +99,8 @@ const Edit = () => {
     } catch {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -175,10 +180,10 @@ const Edit = () => {
     } catch {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setDisable(false);
+      e.target.value = "";
     }
-
-    setDisable(false);
-    e.target.value = "";
   };
 
   const deleteProductImage = async (id) => {
@@ -258,8 +263,9 @@ const Edit = () => {
     } catch {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setDisable(false);
     }
-    setDisable(false);
   };
 
   useEffect(() => {
@@ -276,7 +282,7 @@ const Edit = () => {
   }, [category_id]);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start">Товары</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
@@ -284,340 +290,356 @@ const Edit = () => {
             <AdminSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 shadow-sm p-4 flex flex-col gap-6">
-            <h2 className="subtitle font-playfair mb-6">
-              Редактирование товара
-            </h2>
-
-            <form
-              onSubmit={handleSubmit(updateProduct)}
-              className="flex flex-col gap-6"
-            >
-              <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                  Название товара
-                </label>
-                <input
-                  {...register("name", {
-                    required: "Введите название товара",
-                  })}
-                  type="text"
-                  className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
-                    errors.name ? "border-red-500" : ""
-                  }`}
-                  placeholder="Название товара"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name.message}</p>
-                )}
-              </div>
-
-              <CustomSelect
-                label="Категория"
-                name="category_id"
-                options={categories.map((cat) => ({
-                  value: cat.id,
-                  label: cat.name,
-                }))}
-                value={category_id}
-                onChange={(value) => {
-                  setValue("category_id", value);
-                  fetchSubcategories(value);
-                }}
-                error={errors.category_id?.message}
-              />
-
-              <CustomSelect
-                label="Подкатегория"
-                name="subcategory_id"
-                options={subcategories.map((sub) => ({
-                  value: sub.id,
-                  label: sub.name,
-                }))}
-                value={subcategory_id}
-                onChange={(value) => setValue("subcategory_id", value)}
-                error={errors.subcategory_id?.message}
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
+            <h2 className="subtitle font-playfair">Редактирование товара</h2>
+            {loader == true && <Loader />}
+            {loader == false && !product && (
+              <>
+                <Nostate text="Товар не найден" />
+                <Link
+                  to="/admin/products"
+                  className="btn btn-secondary self-start text-center min-w-32 sm:min-w-0"
+                >
+                  Назад
+                </Link>
+              </>
+            )}
+            {loader == false && product && (
+              <form
+                onSubmit={handleSubmit(updateProduct)}
+                className="flex flex-col gap-6"
+              >
+                <div className="flex flex-col gap-2">
                   <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                    Цена
+                    Название товара
                   </label>
                   <input
-                    {...register("price", {
-                      required: "Введите цену",
-                      min: { value: 0, message: "Цена не может быть меньше 0" },
+                    {...register("name", {
+                      required: "Введите название товара",
                     })}
-                    type="number"
-                    step="0.01"
-                    onChange={(e) => {
-                      let val = parseFloat(e.target.value);
-                      if (isNaN(val) || val < 0) val = 0;
-                      setValue("price", val, { shouldValidate: true });
-                    }}
-                    className={`border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
-                      errors.price ? "border-red-500" : ""
+                    type="text"
+                    className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
+                      errors.name ? "border-red-500" : ""
                     }`}
-                    placeholder="Цена"
+                    placeholder="Название товара"
                   />
-                  {errors.price && (
+                  {errors.name && (
                     <p className="text-red-500 text-sm">
-                      {errors.price.message}
+                      {errors.name.message}
                     </p>
                   )}
                 </div>
 
-                <div>
+                <CustomSelect
+                  label="Категория"
+                  name="category_id"
+                  options={categories.map((cat) => ({
+                    value: cat.id,
+                    label: cat.name,
+                  }))}
+                  value={category_id}
+                  onChange={(value) => {
+                    setValue("category_id", value);
+                    fetchSubcategories(value);
+                  }}
+                  error={errors.category_id?.message}
+                />
+
+                <CustomSelect
+                  label="Подкатегория"
+                  name="subcategory_id"
+                  options={subcategories.map((sub) => ({
+                    value: sub.id,
+                    label: sub.name,
+                  }))}
+                  value={subcategory_id}
+                  onChange={(value) => setValue("subcategory_id", value)}
+                  error={errors.subcategory_id?.message}
+                />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                      Цена
+                    </label>
+                    <input
+                      {...register("price", {
+                        required: "Введите цену",
+                        min: {
+                          value: 0,
+                          message: "Цена не может быть меньше 0",
+                        },
+                      })}
+                      type="number"
+                      step="0.01"
+                      onChange={(e) => {
+                        let val = parseFloat(e.target.value);
+                        if (isNaN(val) || val < 0) val = 0;
+                        setValue("price", val, { shouldValidate: true });
+                      }}
+                      className={`border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
+                        errors.price ? "border-red-500" : ""
+                      }`}
+                      placeholder="Цена"
+                    />
+                    {errors.price && (
+                      <p className="text-red-500 text-sm">
+                        {errors.price.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                      Грамм в упаковке
+                    </label>
+                    <input
+                      {...register("grams", {
+                        required: "Введите количество грамм",
+                        min: {
+                          value: 0,
+                          message: "Граммовка не может быть меньше 0",
+                        },
+                      })}
+                      type="number"
+                      onChange={(e) => {
+                        let val = parseInt(e.target.value);
+                        if (isNaN(val) || val < 0) val = 0;
+                        setValue("grams", val, { shouldValidate: true });
+                      }}
+                      className={`border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 mt-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
+                        errors.grams ? "border-red-500" : ""
+                      }`}
+                      placeholder="Количество грамм"
+                    />
+                    {errors.grams && (
+                      <p className="text-red-500 text-sm">
+                        {errors.grams.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
                   <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                    Грамм в упаковке
+                    Количество
                   </label>
                   <input
-                    {...register("grams", {
-                      required: "Введите количество грамм",
+                    {...register("reserve", {
+                      required: "Введите количество товара на складе",
                       min: {
                         value: 0,
-                        message: "Граммовка не может быть меньше 0",
+                        message: "Количество не может быть меньше 0",
                       },
                     })}
                     type="number"
                     onChange={(e) => {
                       let val = parseInt(e.target.value);
                       if (isNaN(val) || val < 0) val = 0;
-                      setValue("grams", val, { shouldValidate: true });
+                      setValue("reserve", val, { shouldValidate: true });
                     }}
-                    className={`border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 mt-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
-                      errors.grams ? "border-red-500" : ""
+                    className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
+                      errors.reserve ? "border-red-500" : ""
                     }`}
-                    placeholder="Количество грамм"
+                    placeholder="Количество товара"
                   />
-                  {errors.grams && (
+                  {errors.reserve && (
                     <p className="text-red-500 text-sm">
-                      {errors.grams.message}
+                      {errors.reserve.message}
                     </p>
                   )}
                 </div>
-              </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                  Количество
-                </label>
-                <input
-                  {...register("reserve", {
-                    required: "Введите количество товара на складе",
-                    min: {
-                      value: 0,
-                      message: "Количество не может быть меньше 0",
-                    },
-                  })}
-                  type="number"
-                  onChange={(e) => {
-                    let val = parseInt(e.target.value);
-                    if (isNaN(val) || val < 0) val = 0;
-                    setValue("reserve", val, { shouldValidate: true });
-                  }}
-                  className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
-                    errors.reserve ? "border-red-500" : ""
-                  }`}
-                  placeholder="Количество товара"
-                />
-                {errors.reserve && (
-                  <p className="text-red-500 text-sm">
-                    {errors.reserve.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                  Короткое описание
-                </label>
-                <textarea
-                  {...register("short_description")}
-                  className="border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full h-24 mt-2"
-                  placeholder="Короткое описание товара"
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                  Описание
-                </label>
-                <textarea
-                  {...register("description")}
-                  className="border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full h-40 mt-2"
-                  placeholder="Подробное описание товара"
-                ></textarea>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
-                  Изображения
-                </label>
-                <input
-                  type="file"
-                  onChange={handleFile}
-                  className="border p-2 rounded-md"
-                />
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-                  {productImages.map((image, index) => (
-                    <div key={index} className="relative aspect-square group">
-                      <img
-                        src={image.url}
-                        alt=""
-                        className="w-full h-full object-cover rounded-md shadow-sm"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => deleteProductImage(image.id)}
-                        title="Удалить"
-                        className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
-                      >
-                        ✕
-                      </button>
-                      {defaultImageId === image.id ? (
-                        <div
-                          className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
-                          title="Главное фото"
-                        >
-                          ★
-                        </div>
-                      ) : (
-                        <button
-                          className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
-                          onClick={() => setDefaultImageId(image.id)}
-                          title="Сделать главным"
-                        >
-                          ☆
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  {tempImages.map((image, index) => (
-                    <div key={index} className="relative aspect-square group">
-                      <img
-                        src={image.url}
-                        alt=""
-                        className="w-full h-full object-cover rounded-md shadow-sm"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => deleteTempImage(image.id)}
-                        title="Удалить"
-                        className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
-                      >
-                        ✕
-                      </button>
-                      {defaultImageId === image.id ? (
-                        <div
-                          className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
-                          title="Главное фото"
-                        >
-                          ★
-                        </div>
-                      ) : (
-                        <button
-                          className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
-                          onClick={() => setDefaultImageId(image.id)}
-                          title="Сделать главным"
-                        >
-                          ☆
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <CustomSelect
-                label="Статус"
-                name="status"
-                options={[
-                  { value: "in_stock", label: "В наличии" },
-                  { value: "on_sale", label: "Скидка" },
-                  { value: "sold_out", label: "Распродан" },
-                ]}
-                value={status}
-                onChange={(value) => setValue("status", value)}
-                error={errors.status?.message}
-              />
-
-              {status === "on_sale" && (
                 <div>
-                  <label className="text-sm sm:text-lg md:text-2xl font-semibold mb-2">
-                    Скидка (%)
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                    Короткое описание
+                  </label>
+                  <textarea
+                    {...register("short_description")}
+                    className="border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full h-24 mt-2"
+                    placeholder="Короткое описание товара"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                    Описание
+                  </label>
+                  <textarea
+                    {...register("description")}
+                    className="border border-border-light  focus:outline-none focus:ring-1 focus:ring-primary p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full h-40 mt-2"
+                    placeholder="Подробное описание товара"
+                  ></textarea>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                    Изображения
                   </label>
                   <input
-                    {...register("discount", {
-                      required: "Введите процент скидки",
-                      min: { value: 0, message: "Минимум 0%" },
-                      max: { value: 100, message: "Максимум 100%" },
-                    })}
-                    type="number"
-                    step="1"
-                    onChange={(e) => {
-                      let val = parseInt(e.target.value);
-                      if (val > 100) val = 100;
-                      if (val < 0) val = 0;
-                      setValue("discount", val, { shouldValidate: true });
-                    }}
-                    className={`border border-border-light focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
-                      errors.discount ? "border-red-500" : ""
-                    }`}
-                    placeholder="Скидка в % (0-100)"
+                    type="file"
+                    onChange={handleFile}
+                    className="border p-2 rounded-md"
                   />
-                  {errors.discount && (
-                    <p className="text-red-500 text-sm">
-                      {errors.discount.message}
-                    </p>
-                  )}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+                    {productImages.map((image, index) => (
+                      <div key={index} className="relative aspect-square group">
+                        <img
+                          src={image.url}
+                          alt=""
+                          className="w-full h-full object-cover rounded-md shadow-sm"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => deleteProductImage(image.id)}
+                          title="Удалить"
+                          className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
+                        >
+                          ✕
+                        </button>
+                        {defaultImageId === image.id ? (
+                          <div
+                            className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                            title="Главное фото"
+                          >
+                            ★
+                          </div>
+                        ) : (
+                          <button
+                            className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                            onClick={() => setDefaultImageId(image.id)}
+                            title="Сделать главным"
+                          >
+                            ☆
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {tempImages.map((image, index) => (
+                      <div key={index} className="relative aspect-square group">
+                        <img
+                          src={image.url}
+                          alt=""
+                          className="w-full h-full object-cover rounded-md shadow-sm"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => deleteTempImage(image.id)}
+                          title="Удалить"
+                          className="absolute top-2 right-2 bg-red-500 text-bg-base rounded-full text-xs px-2 py-1 hover:bg-red-600 transition"
+                        >
+                          ✕
+                        </button>
+                        {defaultImageId === image.id ? (
+                          <div
+                            className="absolute top-2 left-2 bg-yellow-500 text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                            title="Главное фото"
+                          >
+                            ★
+                          </div>
+                        ) : (
+                          <button
+                            className="absolute top-2 left-2 bg-text-title text-bg-base rounded-full w-6 h-6 flex items-center justify-center"
+                            onClick={() => setDefaultImageId(image.id)}
+                            title="Сделать главным"
+                          >
+                            ☆
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              )}
 
-              <CustomSelect
-                label="Состояние"
-                name="is_active"
-                options={[
-                  { value: 1, label: "Активен" },
-                  { value: 0, label: "Скрыт" },
-                ]}
-                value={is_active}
-                onChange={(value) => setValue("is_active", value)}
-                error={errors.is_active?.message}
-              />
+                <CustomSelect
+                  label="Статус"
+                  name="status"
+                  options={[
+                    { value: "in_stock", label: "В наличии" },
+                    { value: "on_sale", label: "Скидка" },
+                    { value: "sold_out", label: "Распродан" },
+                  ]}
+                  value={status}
+                  onChange={(value) => setValue("status", value)}
+                  error={errors.status?.message}
+                />
 
-              <CustomSelect
-                label='Отображение в блоке "Наша коллекция"'
-                name="is_featured"
-                options={[
-                  { value: 1, label: "Показывать" },
-                  { value: 0, label: "Не показывать" },
-                ]}
-                value={is_featured}
-                onChange={(value) => setValue("is_featured", value)}
-                error={errors.is_featured?.message}
-              />
+                {status === "on_sale" && (
+                  <div>
+                    <label className="text-sm sm:text-lg md:text-2xl font-semibold mb-2">
+                      Скидка (%)
+                    </label>
+                    <input
+                      {...register("discount", {
+                        required: "Введите процент скидки",
+                        min: { value: 0, message: "Минимум 0%" },
+                        max: { value: 100, message: "Максимум 100%" },
+                      })}
+                      type="number"
+                      step="1"
+                      onChange={(e) => {
+                        let val = parseInt(e.target.value);
+                        if (val > 100) val = 100;
+                        if (val < 0) val = 0;
+                        setValue("discount", val, { shouldValidate: true });
+                      }}
+                      className={`border border-border-light focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
+                        errors.discount ? "border-red-500" : ""
+                      }`}
+                      placeholder="Скидка в % (0-100)"
+                    />
+                    {errors.discount && (
+                      <p className="text-red-500 text-sm">
+                        {errors.discount.message}
+                      </p>
+                    )}
+                  </div>
+                )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link
-                  to="/admin/products"
-                  className="btn btn-secondary self-start min-w-32 sm:min-w-0"
-                >
-                  Отмена
-                </Link>
-                <button
-                  type="submit"
-                  disabled={disable}
-                  className="btn btn-primary self-start min-w-32 sm:min-w-0"
-                >
-                  {disable ? "Обработка..." : "Сохранить"}
-                </button>
-              </div>
-            </form>
+                <CustomSelect
+                  label="Состояние"
+                  name="is_active"
+                  options={[
+                    { value: 1, label: "Активен" },
+                    { value: 0, label: "Скрыт" },
+                  ]}
+                  value={is_active}
+                  onChange={(value) => setValue("is_active", value)}
+                  error={errors.is_active?.message}
+                />
+
+                <CustomSelect
+                  label='Отображение в блоке "Наша коллекция"'
+                  name="is_featured"
+                  options={[
+                    { value: 1, label: "Показывать" },
+                    { value: 0, label: "Не показывать" },
+                  ]}
+                  value={is_featured}
+                  onChange={(value) => setValue("is_featured", value)}
+                  error={errors.is_featured?.message}
+                />
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to="/admin/products"
+                    className="btn btn-secondary self-start min-w-32 sm:min-w-0"
+                  >
+                    Отмена
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={disable}
+                    className="btn btn-primary self-start min-w-32 sm:min-w-0"
+                  >
+                    {disable ? "Обработка..." : "Сохранить"}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

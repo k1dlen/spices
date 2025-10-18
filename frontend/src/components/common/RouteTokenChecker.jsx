@@ -30,7 +30,7 @@ const RouteTokenChecker = () => {
           logout();
         }
       } catch (err) {
-        console.warn("Не удалось проверить токен:", err);
+        console.warn("Не удалось проверить токен");
       }
     };
 

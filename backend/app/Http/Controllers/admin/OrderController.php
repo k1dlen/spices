@@ -55,7 +55,8 @@ class OrderController extends Controller
 
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:pending,shipped,delivered,cancelled',
-            'payment_status' => 'required|in:card_on_place,cash_on_place',
+            'payment_status' => 'required|in:paid,not_paid',
+            'cancellation_reason' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
@@ -67,6 +68,7 @@ class OrderController extends Controller
 
         $order->status = $request->status;
         $order->payment_status = $request->payment_status;
+        $order->cancellation_reason = $request->cancellation_reason ?? null;
         $order->save();
 
         return response()->json([

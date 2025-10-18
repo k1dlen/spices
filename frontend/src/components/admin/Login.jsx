@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Layout } from "@components/common/Layout";
 import { AdminAuthContext } from "@components/context/AdminAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +51,7 @@ const Login = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start mb-10 lg:mb-20">Вход в админ панель</h1>
         <div className="max-w-lg mx-auto">
@@ -117,7 +116,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

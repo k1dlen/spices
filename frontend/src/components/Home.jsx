@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Layout } from "@components/common/Layout";
 import Hero from "@components/common/Hero";
 import OurCollection from "@components/common/OurCollection";
 import About from "@components/common/About";
@@ -40,11 +39,11 @@ const Home = () => {
   }, [location]);
 
   return (
-    <Layout>
+    <>
       <Hero />
       <OurCollection />
       <About />
-    </Layout>
+    </>
   );
 };
 

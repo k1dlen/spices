@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { Link } from "react-router";
+import FeatherIcon from "feather-icons-react";
 import { AdminAuthContext } from "@components/context/AdminAuth";
 
 const AdminSidebar = () => {
@@ -64,10 +65,17 @@ const AdminSidebar = () => {
       <div className="lg:hidden">
         <div className="rounded-md shadow-sm">
           <div
-            className="list-none p-4 font-semibold text-text-title cursor-pointer"
+            className="flex list-none p-4 font-semibold text-text-title cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             Панель управления
+            <FeatherIcon
+              icon="chevron-down"
+              className={`transition-transform duration-300 ease-in-out ${
+                isMenuOpen ? "rotate-180" : "rotate-0"
+              }`}
+              strokeWidth={2.3}
+            />
           </div>
           <div
             className={`overflow-hidden transition-all duration-300 ease-in-out ${

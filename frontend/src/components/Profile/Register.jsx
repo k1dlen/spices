@@ -1,5 +1,4 @@
 import React from "react";
-import { Layout } from "@components/common/Layout";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { apiUrl } from "@components/common/http";
@@ -50,7 +49,7 @@ const Register = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start mb-10">Регистрация</h1>
         <div className="max-w-lg mx-auto">
@@ -65,7 +64,11 @@ const Register = () => {
                 </label>
                 <input
                   {...register("name", {
-                    required: "Поле имени является обязательным",
+                    required: "Поле имя является обязательным",
+                    maxLength: {
+                      value: 50,
+                      message: "Поле имя не должно превышать 50 символов",
+                    },
                   })}
                   id="name"
                   type="text"
@@ -237,7 +240,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

@@ -1,17 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Layout } from "@components/common/Layout";
 import { CartContext } from "@components/context/Cart";
 import Loader from "@components/common/Loader";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { userToken, apiUrl } from "@components/common/http";
 
 const Checkout = () => {
   const { cartData, grandTotal, loader, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
-
-  const [phone, setPhone] = useState("");
+  const [disable, setDisable] = useState(false);
 
   const handlePhoneChange = (e) => {
     let numbers = e.target.value.replace(/\D/g, "");
@@ -38,7 +36,7 @@ const Checkout = () => {
       formatted += "-" + numbers.substring(8, 10);
     }
 
-    setPhone(formatted);
+    setValue("mobile", formatted);
   };
 
   const {
@@ -60,6 +58,7 @@ const Checkout = () => {
   });
 
   const payment_method = watch("payment_method");
+  const mobile = watch("mobile");
 
   const fetchUserDetails = async () => {
     try {
@@ -92,6 +91,7 @@ const Checkout = () => {
   };
 
   const saveOrder = async (formData) => {
+    setDisable(true);
     try {
       const res = await fetch(`${apiUrl}/orders`, {
         method: "POST",
@@ -115,6 +115,8 @@ const Checkout = () => {
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setDisable(false);
     }
   };
 
@@ -123,7 +125,7 @@ const Checkout = () => {
   }, []);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start mb-10">Оформление заказа</h1>
         <form onSubmit={handleSubmit(saveOrder)}>
@@ -197,14 +199,18 @@ const Checkout = () => {
                     )}
                   </div>
                   <div className="flex flex-col gap-3 lg:gap-6">
-                    <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                    <label
+                      htmlFor="mobile"
+                      className="text-sm sm:text-lg md:text-2xl font-semibold"
+                    >
                       Телефон
                     </label>
                     <input
                       {...register("mobile", {
                         required: "Поле телефона является обязательным",
                       })}
-                      value={phone}
+                      id="mobile"
+                      value={mobile}
                       onChange={handlePhoneChange}
                       type="tel"
                       className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
@@ -337,15 +343,18 @@ const Checkout = () => {
                     </span>
                   </div>
                 </div>
-                <button className="btn btn-primary  sm:w-full mt-6 text-xl xl:text-2xl">
-                  Подтвердить
+                <button
+                  disabled={disable}
+                  className="btn btn-primary  sm:w-full mt-6 text-xl xl:text-2xl"
+                >
+                  {disable ? "Обработка..." : "Подтвердить"}
                 </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-    </Layout>
+    </>
   );
 };
 

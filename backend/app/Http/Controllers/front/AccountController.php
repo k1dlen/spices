@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class AccountController extends Controller
@@ -16,7 +17,7 @@ class AccountController extends Controller
     public function register(Request $request)
     {
         $rules = [
-            'name' => 'required',
+            'name' => 'required|string|max:50',
             'surname' => 'nullable|string|max:50',
             'email' => 'required|email|unique:users',
             'password' => ['required', 'confirmed', Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised()]
@@ -95,6 +96,50 @@ class AccountController extends Controller
                 'data' => $user
             ], 200);
         }
+    }
+
+    public function update(Request $request)
+    {
+        $user = User::find($request->user()->id);
+
+        if ($user == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Пользователь не найден'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'surname' => 'nullable|string|max:50',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'addres' => 'nullable|string|max:255',
+            'mobile' => 'nullable|string|max:20'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->address = $request->address;
+        $user->save();
+
+        return response()->json([
+            'data' => $user,
+            'status' => 200,
+            'message' => 'Данные о пользователе были успешно обновлены'
+        ], 200);
     }
 
     public function logout(Request $request)

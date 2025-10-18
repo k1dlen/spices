@@ -1,5 +1,4 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { Layout } from "@components/common/Layout";
 import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
 import { CartContext } from "@components/context/Cart";
@@ -40,7 +39,7 @@ const Cart = () => {
   }, []);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         {loader == true && <Loader />}
         {loader == false && cartData.length == 0 && (
@@ -185,7 +184,7 @@ const Cart = () => {
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between mb-2">
                     <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-default">
-                      Сумма
+                      Подытог
                     </span>
                     <span className="text-text-title font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
                       ₽{subTotal().toFixed(2)}
@@ -222,7 +221,6 @@ const Cart = () => {
                                 : "opacity-0 invisible"
                             } 
                             group-hover:opacity-100 group-hover:visible
-                                                  
                             max-w-[calc(100vw-8px)]
                             left-1/2 transform -translate-x-1/2 break-words
                           `}
@@ -324,7 +322,7 @@ const Cart = () => {
             <div className="rounded-md p-4 shadow-sm mt-10 lg:hidden">
               <div className="sm:hidden space-y-1 mb-3">
                 <div>
-                  <span className="text-text-default text-xl">Сумма:</span>
+                  <span className="text-text-default text-xl">Подытог:</span>
                   <span className="text-text-title font-semibold text-xl ml-2">
                     ₽{subTotal().toFixed(2)}
                   </span>
@@ -376,7 +374,7 @@ const Cart = () => {
               <div className="hidden sm:block">
                 <div className="flex justify-between mb-2">
                   <span className="text-text-default text-xl md:text-2xl">
-                    Сумма
+                    Подытог
                   </span>
                   <span className="text-text-title font-semibold text-xl md:text-2xl">
                     ₽{subTotal().toFixed(2)}
@@ -457,7 +455,7 @@ const Cart = () => {
           </div>
         )}
       </div>
-    </Layout>
+    </>
   );
 };
 

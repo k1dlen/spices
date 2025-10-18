@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { adminToken, apiUrl } from "@components/common/http";
 import Loader from "@components/common/Loader";
 import Nostate from "@components/common/Nostate";
-import { Layout } from "../../common/Layout";
 import { toast } from "react-toastify";
-import AdminSidebar from "../../common/AdminSidebar";
+import AdminSidebar from "@components/common/AdminSidebar";
 import FeatherIcon from "feather-icons-react";
 
 const Show = () => {
@@ -14,6 +13,19 @@ const Show = () => {
   const [loader, setLoader] = useState(false);
 
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const tooltipRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const fetchOrders = async (page) => {
     setLoader(true);
@@ -32,13 +44,14 @@ const Show = () => {
       if (res.ok) {
         setOrders(result.data);
         setMeta(result.meta);
-        setLoader(false);
       } else {
         toast.error("Ошибка при получении заказов");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -52,9 +65,9 @@ const Show = () => {
     fetchOrders(1);
   }, []);
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
-        <h1 className="title text-start mb-10 lg:mb-20">Заказы</h1>
+        <h1 className="title text-start mb-10">Заказы</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
             <AdminSidebar />
@@ -96,7 +109,6 @@ const Show = () => {
                       <tr
                         key={`order-${order.id}`}
                         className="hover:bg-bg-block/30 transition-colors cursor-pointer"
-                        onClick={() => navigate(`/admin/orders/${order.id}`)}
                       >
                         <td className="px-4 py-3 text-text-default text-lg">
                           {order.id}
@@ -138,9 +150,38 @@ const Show = () => {
                             </span>
                           )}
                           {order.status === "cancelled" && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800">
-                              Отменён
-                            </span>
+                            <div
+                              className="inline-flex items-center gap-1 relative cursor-pointer group"
+                              ref={tooltipRef}
+                              onClick={() => setOpen((prev) => !prev)}
+                            >
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800">
+                                Отменён
+                                {order.cancellation_reason && (
+                                  <FeatherIcon
+                                    icon="info"
+                                    strokeWidth={2.3}
+                                    className="w-4 h-auto"
+                                  />
+                                )}
+                              </span>
+
+                              {order.cancellation_reason && (
+                                <span
+                                  className={`
+                                    absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 z-50 group-hover:opacity-100 group-hover:visible max-w-[calc(100vw-8px)] rounded-sm bg-red-100 text-red-800 px-2 py-1 text-xs transition-opacity duration-200
+                                    ${
+                                      open
+                                        ? "opacity-100 visible"
+                                        : "opacity-0 invisible"
+                                    }
+                                  `}
+                                >
+                                  Причина: {order.cancellation_reason}
+                                  <span className="absolute top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-primary"></span>
+                                </span>
+                              )}
+                            </div>
                           )}
                         </td>
                         <td>
@@ -169,10 +210,10 @@ const Show = () => {
                   className="bg-bg-base rounded-md shadow-sm p-4 cursor-pointer transition hover:shadow-md"
                   onClick={() => navigate(`/admin/orders/${order.id}`)}
                 >
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-text-title font-semibold">
-                      Заказ #{order.id}
-                    </span>
+                  <div className="text-text-title font-semibold">
+                    Заказ #{order.id}
+                  </div>
+                  <div className="mb-2">
                     <span
                       className={`text-xs font-medium px-2 py-1 rounded-md ${
                         order.payment_status === "paid"
@@ -185,19 +226,47 @@ const Show = () => {
                         : "Не оплачен"}
                     </span>
                   </div>
+                  <div className="text-text-default text-lg font-medium">
+                    Имя: {order.name}
+                  </div>
                   <div className="text-text-default text-lg font-medium mb-2">
-                    {order.name} {order.surname}
+                    Фамилия: {order.surname}
                   </div>
                   <div className="text-sm text-text-muted mb-2">
-                    {order.email}
+                    Эл.почта: {order.email}
                   </div>
                   <div className="text-sm mb-2">
                     Сумма: {order.grand_total} ₽
                   </div>
                   <div className="text-sm mb-2">
                     Статус:{" "}
-                    <strong className="capitalize">{order.status}</strong>
+                    {order.status === "pending" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">
+                        В ожидании
+                      </span>
+                    )}
+                    {order.status === "shipped" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                        Отправлен
+                      </span>
+                    )}
+                    {order.status === "delivered" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-800">
+                        Доставлен
+                      </span>
+                    )}
+                    {order.status === "cancelled" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-800">
+                        Отменён
+                      </span>
+                    )}
                   </div>
+                  {order.status === "cancelled" && (
+                    <div className="text-sm mb-2">
+                      Причина: {order.cancellation_reason}
+                    </div>
+                  )}
+
                   <Link
                     to={`/admin/orders/${order.id}`}
                     onClick={(e) => e.stopPropagation()}
@@ -234,7 +303,7 @@ const Show = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

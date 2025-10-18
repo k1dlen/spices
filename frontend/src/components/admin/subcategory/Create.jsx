@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { Layout } from "@components/common/Layout";
 import AdminSidebar from "@components/common/AdminSidebar";
 import { adminToken, apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
@@ -59,7 +58,7 @@ const Create = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <h1 className="title text-start">Подкатегории</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
@@ -67,7 +66,7 @@ const Create = () => {
             <AdminSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 shadow-sm p-4">
-            <h2 className="subtitle font-playfair mb-6">
+            <h2 className="subtitle font-playfair">
               Создание подкатегории
             </h2>
             <form
@@ -126,7 +125,7 @@ const Create = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

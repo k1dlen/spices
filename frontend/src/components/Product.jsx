@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Layout } from "@components/common/Layout";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { apiUrl } from "@components/common/http";
@@ -21,7 +20,7 @@ const Product = () => {
     useContext(CartContext);
 
   const [cartItemId, setCartItemId] = useState(null);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState(null);
   const [loader, setLoader] = useState(false);
   const [randomProducts, setRandomProducts] = useState([]);
   const [productImages, setProductImages] = useState([]);
@@ -58,13 +57,14 @@ const Product = () => {
             url: img.image_url,
           }))
         );
-        setLoader(false);
       } else {
         toast.error("Ошибка при получении категорий");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -162,20 +162,20 @@ const Product = () => {
   }, [product, cartData, user]);
 
   return (
-    <Layout>
+    <>
       {loader == true && (
         <div className="py-20">
           <Loader />
         </div>
       )}
-      {loader == false && (!product || Object.keys(product).length === 0) && (
-        <div className="shadow-sm my-20">
+      {loader === false && !product && (
+        <div className=" container mx-auto shadow-sm py-20 my-40">
           <Nostate text="Товар не найден" />
         </div>
       )}
 
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
-        {loader == false && Object.keys(product).length > 0 && (
+        {loader == false && product && (
           <div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
               <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 relative">
@@ -318,7 +318,7 @@ const Product = () => {
           </div>
         )}
       </div>
-    </Layout>
+    </>
   );
 };
 

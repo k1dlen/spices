@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { Layout } from "@components/common/Layout";
 import AdminSidebar from "@components/common/AdminSidebar";
 import { adminToken, apiUrl } from "@components/common/http";
 import Loader from "@components/common/Loader";
@@ -36,14 +35,14 @@ const Show = () => {
 
       if (res.ok) {
         setSubcategories(result.data);
-
-        setLoader(false);
       } else {
         toast.error("Ошибка при получении подкатегорий");
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
       toast.error("Сервер недоступен. Проверьте подключение.");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -96,7 +95,7 @@ const Show = () => {
   }, []);
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
         <div className="flex flex-col sm:flex-row justify-between items-start mb-6">
           <h1 className="title text-start">Подкатегории</h1>
@@ -257,7 +256,7 @@ const Show = () => {
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
-    </Layout>
+    </>
   );
 };
 

@@ -112,13 +112,14 @@ export const CartProvider = ({ children }) => {
 
         if (res.ok) {
           setCartData(result.data);
-          setLoader(false);
         } else {
           toast.error("Ошибка при получении корзины");
         }
       } catch (error) {
         console.error("Ошибка сети или парсинга");
         toast.error("Сервер недоступен. Проверьте подключение.");
+      } finally {
+        setLoader(false);
       }
     }
   };
