@@ -8,7 +8,7 @@ const Header = () => {
   const { getQuantity } = useContext(CartContext);
   const quantity = getQuantity();
   return (
-    <header className="border-border-light border-b-1 bg-bg-block px-1 sm:px-0">
+    <header className="border-border-light border-b-1 bg-bg-block px-1 md:px-0">
       <div className="container mx-auto py-5">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">

@@ -59,22 +59,20 @@ const Create = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start">Подкатегории</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
             <AdminSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 shadow-sm p-4">
-            <h2 className="subtitle font-playfair">
-              Создание подкатегории
-            </h2>
+            <h2 className="subtitle font-playfair">Создание подкатегории</h2>
             <form
               onSubmit={handleSubmit(saveSubcategory)}
               className="flex flex-col gap-6"
             >
               <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                   Название подкатегории
                 </label>
                 <input

@@ -96,7 +96,7 @@ const Show = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <div className="flex flex-col sm:flex-row justify-between items-start mb-6">
           <h1 className="title text-start">Подкатегории</h1>
         </div>

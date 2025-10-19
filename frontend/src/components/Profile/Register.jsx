@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
+import FeatherIcon from "feather-icons-react";
 
 const Register = () => {
   const {
@@ -12,6 +13,9 @@ const Register = () => {
     setError,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
 
   const password = watch("password");
 
@@ -50,7 +54,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10">Регистрация</h1>
         <div className="max-w-lg mx-auto">
           <div className="bg-bg-base rounded-md shadow-sm p-6">
@@ -69,9 +73,20 @@ const Register = () => {
                       value: 50,
                       message: "Поле имя не должно превышать 50 символов",
                     },
+                    validate: (value) =>
+                      /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                      "Имя должно содержать только буквы",
                   })}
                   id="name"
                   type="text"
+                  onInput={(e) => {
+                    const clean = e.currentTarget.value.replace(
+                      /[^A-Za-zА-Яа-яЁё\s-]/g,
+                      ""
+                    );
+                    if (clean !== e.currentTarget.value)
+                      e.currentTarget.value = clean;
+                  }}
                   autoComplete="given-name"
                   className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
                     errors.name ? "border-red-500" : "border-border-light"
@@ -98,7 +113,24 @@ const Register = () => {
                       value: 50,
                       message: "Поле фамилия не должно превышать 50 символов",
                     },
+                    validate: (value) => {
+                      if (!value || value.trim() === "") {
+                        return true;
+                      }
+                      return (
+                        /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                        "Фамилия должна содержать только буквы"
+                      );
+                    },
                   })}
+                  onInput={(e) => {
+                    const clean = e.currentTarget.value.replace(
+                      /[^A-Za-zА-Яа-яЁё\s-]/g,
+                      ""
+                    );
+                    if (clean !== e.currentTarget.value)
+                      e.currentTarget.value = clean;
+                  }}
                   id="surname"
                   type="text"
                   autoComplete="family-name"
@@ -151,30 +183,44 @@ const Register = () => {
                 >
                   Пароль
                 </label>
-                <input
-                  {...register("password", {
-                    required: "Поле пароля является обязательным",
-                    minLength: {
-                      value: 12,
-                      message: "Пароль должен быть минимум 12 символов",
-                    },
-                    validate: (value) => {
-                      const regex =
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
-                      return (
-                        regex.test(value) ||
-                        "Пароль должен содержать заглавные, строчные буквы, цифры и спецсимволы"
-                      );
-                    },
-                  })}
-                  id="password"
-                  type="password"
-                  autoComplete="new-password"
-                  className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
-                    errors.password ? "border-red-500" : "border-border-light"
-                  }`}
-                  placeholder="••••••••"
-                />
+                <div className="relative w-full">
+                  <input
+                    {...register("password", {
+                      required: "Поле пароля является обязательным",
+                      minLength: {
+                        value: 12,
+                        message: "Пароль должен быть минимум 12 символов",
+                      },
+                      validate: (value) => {
+                        const regex =
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#.$%^&*])/;
+                        return (
+                          regex.test(value) ||
+                          "Пароль должен содержать заглавные, строчные буквы, цифры и спецсимволы"
+                        );
+                      },
+                    })}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    className={`border rounded-md w-full p-3  text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                      errors.password ? "border-red-500" : "border-border-light"
+                    }`}
+                    placeholder="••••••••"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary focus:outline-none"
+                  >
+                    {showPassword ? (
+                      <FeatherIcon icon="eye" className="h-4 w-auto" />
+                    ) : (
+                      <FeatherIcon icon="eye-off" className="h-4 w-auto" />
+                    )}
+                  </button>
+                </div>
                 <div className="absolute left-0 top-full mt-1 bg-bg-base w-64 border rounded-md shadow-md p-2 text-sm text-gray-700 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
                   Пароль должен содержать:
                   <ul className="list-disc ml-4">
@@ -198,22 +244,35 @@ const Register = () => {
                 >
                   Подтверждение пароля
                 </label>
-                <input
-                  {...register("password_confirmation", {
-                    required: "Подтверждение пароля обязательно",
-                    validate: (value) =>
-                      value === password || "Пароли не совпадают",
-                  })}
-                  id="password_confirmation"
-                  type="password"
-                  autoComplete="new-password"
-                  className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
-                    errors.password_confirmation
-                      ? "border-red-500"
-                      : "border-border-light"
-                  }`}
-                  placeholder="••••••••"
-                />
+                <div className="relative w-full">
+                  <input
+                    {...register("password_confirmation", {
+                      required: "Подтверждение пароля обязательно",
+                      validate: (value) =>
+                        value === password || "Пароли не совпадают",
+                    })}
+                    id="password_confirmation"
+                    type={showPasswordConfirmation ? "text" : "password"}
+                    autoComplete="new-password"
+                    className={`border w-full rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                      errors.password_confirmation
+                        ? "border-red-500"
+                        : "border-border-light"
+                    }`}
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswordConfirmation((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary focus:outline-none"
+                  >
+                    {showPasswordConfirmation ? (
+                      <FeatherIcon icon="eye" className="h-4 w-auto" />
+                    ) : (
+                      <FeatherIcon icon="eye-off" className="h-4 w-auto" />
+                    )}
+                  </button>
+                </div>
                 {errors.password_confirmation && (
                   <p className="mt-1 text-sm text-red-500">
                     {errors.password_confirmation.message}

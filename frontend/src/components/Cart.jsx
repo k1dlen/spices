@@ -40,7 +40,7 @@ const Cart = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         {loader == true && <Loader />}
         {loader == false && cartData.length == 0 && (
           <div className="flex flex-col items-start  md:items-center">
@@ -108,7 +108,7 @@ const Cart = () => {
                                 <span className="line-through text-text-title/50 mr-1">
                                   ₽{item.product.price}
                                 </span>
-                                <span className="text-title font-semibold">
+                                <span className="text-title font-semibold text-text-title">
                                   ₽
                                   {Math.round(
                                     item.product.price *
@@ -117,13 +117,13 @@ const Cart = () => {
                                 </span>
                               </span>
                             ) : (
-                              <span className="font-semibold">
+                              <span className="font-semibold text-text-title">
                                 ₽{item.product.price}
                               </span>
                             )}
                           </td>
                           <td className="py-6 text-center align-top xl:text-4xl lg:text-3xl">
-                            <div className="inline-flex items-center gap-6 justify-center select-none">
+                            <div className="inline-flex items-center gap-6 justify-center select-none text-text-title">
                               <span
                                 onClick={() =>
                                   handleQuantityChange(
@@ -158,7 +158,7 @@ const Cart = () => {
                             </div>
                           </td>
 
-                          <td className="py-6 text-center align-top xl:text-4xl lg:text-3xl">
+                          <td className="py-6 text-center align-top xl:text-4xl lg:text-3xl text-text-title">
                             ₽{getItemTotal(item).toFixed(2)}
                           </td>
                           <td className="py-6 text-right align-top">
@@ -297,8 +297,29 @@ const Cart = () => {
                       )}
                     </p>
 
-                    <p className="text-text-default text-xl">
-                      Количество: x {item.quantity}
+                    <p className="text-text-default text-xl flex items-center">
+                      Количество:{" "}
+                      <span
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity - 1)
+                        }
+                        className="font-light text-5xl cursor-pointer hover:opacity-70 select-none"
+                      >
+                        −
+                      </span>
+                      <span className="font-semibold">x {item.quantity}</span>
+                      <span
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity + 1)
+                        }
+                        className={`font-light select-none text-5xl transition-opacity ${
+                          item.quantity < item.product?.reserve
+                            ? "cursor-pointer hover:opacity-70"
+                            : "opacity-40 cursor-not-allowed"
+                        }`}
+                      >
+                        +
+                      </span>
                     </p>
                     <p className="text-text-title text-xl">
                       Итог: ₽{getItemTotal(item).toFixed(2)}

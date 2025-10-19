@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\front;
 
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
 class AccountController extends Controller
@@ -98,6 +99,60 @@ class AccountController extends Controller
         }
     }
 
+    public function getUserOrders(Request $request)
+    {
+        $user = User::find($request->user()->id);
+
+        if ($user == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Пользователь не найден'
+            ], 404);
+        }
+
+        $orders = Order::where('user_id', $request->user()->id)->paginate(10);
+
+        if ($orders == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'У данного пользователя не было найдено заказов'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $orders->items(),
+            'status' => 200,
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'total' => $orders->total()
+            ]
+        ], 200);
+    }
+
+
+    public function getOrderDetail($id, Request $request)
+    {
+
+        $order = Order::where([
+            'user_id' => $request->user()->id,
+            'id' => $id
+        ])->with('items', 'items.product')
+            ->first();
+
+        if ($order == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Заказ не найден'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $order,
+            'status' => 200,
+        ], 200);
+    }
+
     public function update(Request $request)
     {
         $user = User::find($request->user()->id);
@@ -109,6 +164,8 @@ class AccountController extends Controller
             ], 404);
         }
 
+
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'surname' => 'nullable|string|max:50',
@@ -117,7 +174,7 @@ class AccountController extends Controller
                 'email',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'addres' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
             'mobile' => 'nullable|string|max:20'
         ]);
 
@@ -128,11 +185,35 @@ class AccountController extends Controller
             ], 400);
         }
 
-        $user->name = $request->name;
-        $user->surname = $request->surname;
-        $user->email = $request->email;
-        $user->mobile = $request->mobile;
-        $user->address = $request->address;
+        $input = $validator->validated();
+
+        $normalize = fn($value) => $value ?? '';
+
+        $current = [
+            'name' => $normalize($user->name),
+            'surname' => $normalize($user->surname),
+            'email' => $normalize($user->email),
+            'address' => $normalize($user->address),
+            'mobile' => $normalize($user->mobile),
+        ];
+
+        $incoming = [
+            'name' => $normalize($input['name']),
+            'surname' => $normalize($input['surname'] ?? null),
+            'email' => $normalize($input['email']),
+            'address' => $normalize($input['address'] ?? null),
+            'mobile' => $normalize($input['mobile'] ?? null),
+        ];
+
+        if ($current === $incoming) {
+            return response()->json([
+                'data' => $user,
+                'status' => 200,
+                'message' => 'Данные не были изменены'
+            ], 200);
+        }
+
+        $user->fill($incoming);
         $user->save();
 
         return response()->json([

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { userToken, apiUrl } from "@components/common/http";
 import UserSidebar from "@components/common/UserSidebar";
 import Loader from "@components/common/Loader";
@@ -34,28 +34,29 @@ const Profile = () => {
   const mobile = watch("mobile");
 
   const handlePhoneChange = (e) => {
-    let numbers = e.target.value.replace(/\D/g, "");
+    let value = e.target.value;
+    let digits = value.replace(/\D/g, "");
 
-    if (numbers.startsWith("7") || numbers.startsWith("8")) {
-      numbers = numbers.substring(1);
+    if (digits.startsWith("8")) {
+      digits = "7" + digits.slice(1);
     }
 
-    numbers = numbers.substring(0, 10);
+    if (digits.length > 0 && !digits.startsWith("7")) {
+      digits = "7" + digits;
+    }
+
+    if (digits.length > 11) {
+      digits = digits.slice(0, 11);
+    }
 
     let formatted = "";
-
-    if (numbers.length > 0) {
-      formatted += "+7 ";
-      formatted += " (" + numbers.substring(0, 3);
-    }
-    if (numbers.length >= 4) {
-      formatted += ") " + numbers.substring(3, 6);
-    }
-    if (numbers.length >= 7) {
-      formatted += "-" + numbers.substring(6, 8);
-    }
-    if (numbers.length >= 9) {
-      formatted += "-" + numbers.substring(8, 10);
+    if (digits) {
+      formatted = "+7";
+      const rest = digits.slice(1);
+      if (rest.length > 0) formatted += " (" + rest.slice(0, 3);
+      if (rest.length >= 4) formatted += ") " + rest.slice(3, 6);
+      if (rest.length >= 7) formatted += "-" + rest.slice(6, 8);
+      if (rest.length >= 9) formatted += "-" + rest.slice(8, 10);
     }
 
     setValue("mobile", formatted);
@@ -88,7 +89,9 @@ const Profile = () => {
           result.message || "Данные о пользователе успешно обновлены"
         );
       } else {
-        toast.error("Ошибка при обновлении данных пользователя");
+        toast.error(
+          result.message || "Ошибка при обновлении данных пользователя"
+        );
       }
     } catch (error) {
       console.error("Ошибка сети или парсинга");
@@ -101,7 +104,7 @@ const Profile = () => {
   const fetchUser = async () => {
     setLoader(true);
     try {
-      const res = await fetch(`${apiUrl}/getUserDetail`, {
+      const res = await fetch(`${apiUrl}/get-user-detail`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -138,7 +141,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10">Личный кабинет</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
@@ -168,6 +171,9 @@ const Profile = () => {
                             value: 50,
                             message: "Поле имя не должно превышать 50 символов",
                           },
+                          validate: (value) =>
+                            /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                            "Имя должно содержать только буквы",
                         })}
                         id="name"
                         type="text"
@@ -228,6 +234,15 @@ const Profile = () => {
                             message:
                               "Поле фамилия не должно превышать 50 символов",
                           },
+                          validate: (value) => {
+                            if (!value || value.trim() === "") {
+                              return true;
+                            }
+                            return (
+                              /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                              "Фамилия должна содержать только буквы"
+                            );
+                          },
                         })}
                         id="surname"
                         type="text"
@@ -264,8 +279,10 @@ const Profile = () => {
                         value={mobile}
                         onChange={handlePhoneChange}
                         type="tel"
-                        className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
-                          errors.mobile ? "border-red-500" : ""
+                        className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                          errors.mobile
+                            ? "border-red-500"
+                            : "border-border-light"
                         }`}
                         placeholder="+7 (999) 999-99-99 (необязательно)"
                       />
@@ -286,6 +303,15 @@ const Profile = () => {
                           value: 255,
                           message:
                             "Поле адреса не может быть больше, чем 255 символов",
+                        },
+                        validate: (value) => {
+                          if (!value || value.trim() === "") {
+                            return true;
+                          }
+                          return (
+                            /^[A-Za-zА-Яа-яЁё0-9\s-]+$/.test(value) ||
+                            "Адрес должен содержать только буквы, цифры, пробелы и дефис"
+                          );
                         },
                       })}
                       className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full ${

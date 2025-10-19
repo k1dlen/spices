@@ -5,7 +5,7 @@ import HeroImage from "@assets/images/Hero.png";
 const Hero = () => {
   return (
     <div className="bg-bg-block">
-      <div className="container mx-auto px-1 sm:px-0">
+      <div className="container mx-auto px-1 md:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-20 md:py-40 items-center">
           <div className="col-span-1 md:col-span-6 flex flex-col items-start gap-6 md:px-0 text-left">
             <h1 className="title">

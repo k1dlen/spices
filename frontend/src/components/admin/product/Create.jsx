@@ -184,7 +184,7 @@ const Create = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start">Товары</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
           <div className="col-span-1 lg:col-span-3">
@@ -198,7 +198,7 @@ const Create = () => {
               className="flex flex-col gap-6"
             >
               <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                   Название товара
                 </label>
                 <input
@@ -248,7 +248,7 @@ const Create = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                     Цена
                   </label>
                   <input
@@ -276,7 +276,7 @@ const Create = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                     Грамм в упаковке
                   </label>
                   <input
@@ -307,7 +307,7 @@ const Create = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                   Количество
                 </label>
                 <input
@@ -337,7 +337,7 @@ const Create = () => {
               </div>
 
               <div>
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                   Короткое описание
                 </label>
                 <textarea
@@ -359,7 +359,7 @@ const Create = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+                <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
                   Изображения
                 </label>
                 <input
@@ -402,7 +402,7 @@ const Create = () => {
 
               {status === "on_sale" && (
                 <div>
-                  <label className="text-sm sm:text-lg md:text-2xl font-semibold mb-2">
+                  <label className="text-sm sm:text-lg md:text-2xl font-semibold mb-2 text-text-title">
                     Скидка (%)
                   </label>
                   <input

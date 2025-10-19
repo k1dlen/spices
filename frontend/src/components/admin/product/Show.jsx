@@ -100,7 +100,7 @@ const Show = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start">Товары</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start mt-10">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
@@ -114,7 +114,7 @@ const Show = () => {
               </div>
             )}
 
-            <div className="hidden sm:block shadow-sm rounded-md overflow-x-auto">
+            <div className="hidden sm:block shadow-sm rounded-md overflow-x-auto ">
               {loader == false && products.length > 0 && (
                 <table className="min-w-full divide-y divide-border-light rounded-md">
                   <thead className="bg-bg-block">
@@ -129,7 +129,10 @@ const Show = () => {
                         Название
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-24">
-                        Кол&nbsp;-&nbsp;во
+                        Продано
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
+                        На складе
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-text-title w-32">
                         Статус
@@ -169,6 +172,9 @@ const Show = () => {
                           </td>
                           <td className="px-4 py-3 text-text-default text-lg">
                             {product.name}
+                          </td>
+                          <td className="px-4 py-3 text-text-default text-lg">
+                            {product.sold_count}
                           </td>
                           <td className="px-4 py-3 text-text-default text-lg">
                             {product.reserve}
@@ -274,6 +280,10 @@ const Show = () => {
                           {product.is_active ? "Активен" : "Скрыт"}
                         </span>
 
+                        <span className="px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-orange-100 text-orange-800">
+                          Продано: {product.sold_count}
+                        </span>
+
                         {product.status === "in_stock" && (
                           <span className=" px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-green-100 text-green-800">
                             В наличии
@@ -292,7 +302,7 @@ const Show = () => {
 
                         {product.status !== "sold_out" && (
                           <span className="px-2.5 py-0.5 rounded-md text-xs self-start font-medium bg-blue-100 text-blue-800">
-                            Кол-во: {product.reserve}
+                            На складе: {product.reserve}
                           </span>
                         )}
                       </div>
@@ -334,7 +344,7 @@ const Show = () => {
                 <button
                   onClick={() => handlePageChange(meta.current_page - 1)}
                   disabled={meta.current_page === 1}
-                  className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
+                  className="px-3 py-1 rounded-md border text-text-title border-border-light disabled:opacity-50"
                 >
                   Назад
                 </button>
@@ -346,7 +356,7 @@ const Show = () => {
                 <button
                   onClick={() => handlePageChange(meta.current_page + 1)}
                   disabled={meta.current_page === meta.last_page}
-                  className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
+                  className="px-3 py-1 rounded-md border border-border-light text-text-title disabled:opacity-50"
                 >
                   Вперёд
                 </button>

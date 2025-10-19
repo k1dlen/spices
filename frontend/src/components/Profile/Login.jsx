@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
 import { AuthContext } from "@components/context/Auth";
@@ -58,7 +58,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10">Вход в личный кабинет</h1>
         <div className="max-w-lg mx-auto">
           <div className="rounded-md shadow-sm p-6 ">

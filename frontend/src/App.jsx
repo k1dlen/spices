@@ -17,6 +17,8 @@ import { RequireAuth } from "@components/profile/RequireAuth";
 import Register from "@components/profile/Register";
 
 import { AdminRequireAuth } from "@components/admin/AdminRequireAuth";
+import MyOrderDetails from "@components/profile/MyOrderDetails";
+import Confirmation from "@components/Confirmation";
 
 const Login = lazy(() => import("@components/admin/Login"));
 const Dashboard = lazy(() => import("@components/admin/Dashboard"));
@@ -41,6 +43,9 @@ const EditProduct = lazy(() => import("@components/admin/product/Edit"));
 
 const ShowOrders = lazy(() => import("@components/admin/orders/Show"));
 const OrderDetails = lazy(() => import("@components/admin/orders/Details"));
+
+const ShowUsers = lazy(() => import("@components/admin/users/Show"));
+const UserDetails = lazy(() => import("@components/admin/users/Details"));
 
 function App() {
   return (
@@ -67,6 +72,14 @@ function App() {
               }
             />
             <Route
+              path="/confirmation/:id"
+              element={
+                <RequireAuth>
+                  <Confirmation />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="/profile"
               element={
                 <RequireAuth>
@@ -74,7 +87,22 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/profile/orders" element={<MyOrders />} />
+            <Route
+              path="/profile/orders"
+              element={
+                <RequireAuth>
+                  <MyOrders />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <RequireAuth>
+                  <MyOrderDetails />
+                </RequireAuth>
+              }
+            />
 
             {/* Admin Routes */}
             <Route path="/admin/login" element={<Login />} />
@@ -266,6 +294,38 @@ function App() {
                     }
                   >
                     <OrderDetails />
+                  </Suspense>
+                </AdminRequireAuth>
+              }
+            />
+            <Route
+              path="admin/users"
+              element={
+                <AdminRequireAuth>
+                  <Suspense
+                    fallback={
+                      <div className="sm:my-10 lg:my-20">
+                        <Loader />
+                      </div>
+                    }
+                  >
+                    <ShowUsers />
+                  </Suspense>
+                </AdminRequireAuth>
+              }
+            />
+            <Route
+              path="admin/users/:id"
+              element={
+                <AdminRequireAuth>
+                  <Suspense
+                    fallback={
+                      <div className="sm:my-10 lg:my-20">
+                        <Loader />
+                      </div>
+                    }
+                  >
+                    <UserDetails />
                   </Suspense>
                 </AdminRequireAuth>
               }

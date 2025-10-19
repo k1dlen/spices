@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import FeatherIcon from "feather-icons-react";
 
 const CustomSelect = ({ options, value, onChange, error, label, name }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,7 @@ const CustomSelect = ({ options, value, onChange, error, label, name }) => {
 
   return (
     <div className="flex flex-col gap-2" ref={dropdownRef}>
-      <label className="text-sm sm:text-lg md:text-2xl font-semibold">
+      <label className="text-sm sm:text-lg md:text-2xl font-semibold text-text-title">
         {label}
       </label>
 
@@ -28,27 +29,18 @@ const CustomSelect = ({ options, value, onChange, error, label, name }) => {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full flex justify-between items-center p-2 text-sm sm:text-lg md:text-2xl rounded-md border ${
+          className={`w-full flex justify-between items-center p-2 text-sm sm:text-lg md:text-2xl rounded-md border text-text-title ${
             error ? "border-red-500" : "border-border-light"
           }  focus:outline-none focus:ring-1 focus:ring-primary`}
         >
           <span>{selectedOption?.label || "Выберите статус"}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`w-5 h-5 transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
+          <FeatherIcon
+            icon="chevron-down"
+            className={`transition-transform duration-300 ease-in-out ${
+              isOpen ? "rotate-180" : "rotate-0"
             }`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+            strokeWidth={2.3}
+          />
         </button>
 
         {isOpen && (

@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const NotFound = () => {
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <div className="flex flex-col items-start text-start md:items-center md:text-center gap-8">
           <h1 className="title text-text-title">404</h1>
           <h2 className="subtitle text-text-default max-w-2xl">

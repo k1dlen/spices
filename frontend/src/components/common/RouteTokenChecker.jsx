@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { AuthContext } from "@components/context/Auth";
 import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";

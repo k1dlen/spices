@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { apiUrl } from "@components/common/http";
@@ -174,7 +174,7 @@ const Product = () => {
         </div>
       )}
 
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         {loader == false && product && (
           <div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
@@ -299,6 +299,12 @@ const Product = () => {
                     >
                       <Link
                         to={`/product/${product.id}`}
+                        onClick={() =>
+                          window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                          })
+                        }
                         className="flex flex-col gap-4 group h-full"
                       >
                         <div className="overflow-hidden rounded-md">

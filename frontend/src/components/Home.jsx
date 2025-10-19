@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import Hero from "@components/common/Hero";
 import OurCollection from "@components/common/OurCollection";
 import About from "@components/common/About";

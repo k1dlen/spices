@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::orderBy('created_at', 'ASC')
+        $orders = Order::orderBy('created_at', 'DESC')
             ->paginate(10);
 
         return response()->json([

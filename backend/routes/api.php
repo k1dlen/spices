@@ -6,9 +6,11 @@ use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\front\AccountController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\admin\SubcategoryController;
 use App\Http\Controllers\admin\OrderController as AdminOrderController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\front\OrderController as FrontOrderController;
 use App\Http\Controllers\front\CartController;
 use App\Http\Controllers\front\ProductController as FrontProductController;
@@ -30,7 +32,9 @@ Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
         return $request->user();
     });
     Route::post('/orders', [FrontOrderController::class, 'store'])->middleware('throttle:5,1');
-    Route::get('/getUserDetail', [AccountController::class, 'getUserDetail']);
+    Route::get('/get-user-detail', [AccountController::class, 'getUserDetail']);
+    Route::get('get-user-orders', [AccountController::class, 'getUserOrders']);
+    Route::get('get-order-detail/{id}', [AccountController::class, 'getOrderDetail']);
     Route::put('update-user',  [AccountController::class, 'update'])->middleware('throttle:5,1');
     Route::resource('cart', CartController::class);
     Route::post('logout', [AccountController::class, 'logout']);
@@ -53,4 +57,9 @@ Route::group(['middleware' => ['auth:sanctum', 'checkAdminRole']], function () {
     Route::get('orders', [AdminOrderController::class, 'index']);
     Route::get('orders/{id}', [AdminOrderController::class, 'show']);
     Route::put('orders/{id}', [AdminOrderController::class, 'update']);
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });

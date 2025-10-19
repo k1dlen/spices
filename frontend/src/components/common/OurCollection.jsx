@@ -34,7 +34,7 @@ const OurCollection = () => {
   }, []);
 
   return (
-    <div className="container mx-auto mt-10 lg:mt-20 px-1 sm:px-0">
+    <div className="container mx-auto mt-10 lg:mt-20 px-1 md:px-0">
       <h2 className="title text-start lg:text-center">Наша Коллекция</h2>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-10 items-start">
         {collectionProducts &&

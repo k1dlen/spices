@@ -25,6 +25,8 @@ body {
 
 html {
   scroll-behavior: smooth;
+  color-scheme: light;
+  forced-color-adjust: none;
 }
 
 /* Buttons */

@@ -1,49 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import AdminSidebar from "@components/common/AdminSidebar";
-import { adminToken, apiUrl } from "@components/common/http";
-import { useForm } from "react-hook-form";
+import { Link, useParams } from "react-router";
+import UserSidebar from "@components/common/UserSidebar";
+import { userToken, apiUrl } from "@components/common/http";
 import Loader from "@components/common/Loader";
 import Nostate from "@components/common/Nostate";
-import CustomSelect from "@components/common/CustomSelect";
 import { toast } from "react-toastify";
 import { formatDate } from "@components/common/DateFormatter";
 
-const Details = () => {
-  const [disable, setDisable] = useState(false);
+const MyOrderDetails = () => {
   const [order, setOrder] = useState(null);
   const [items, setItems] = useState([]);
   const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
   const { id } = useParams();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      status: "pending",
-      payment_status: "not_paid",
-      cancellation_reason: null,
-    },
-  });
-
-  const status = watch("status");
-  const payment_status = watch("payment_status");
 
   const fetchOrder = async () => {
     setLoader(true);
     try {
-      const res = await fetch(`${apiUrl}/orders/${id}`, {
+      const res = await fetch(`${apiUrl}/get-order-detail/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
-          Authorization: `Bearer ${adminToken()}`,
+          Authorization: `Bearer ${userToken()}`,
         },
       });
 
@@ -52,11 +30,6 @@ const Details = () => {
       if (res.ok) {
         setOrder(result.data);
         setItems(result.data.items);
-        reset({
-          status: result.data.status,
-          payment_status: result.data.payment_status,
-          cancellation_reason: result.data?.cancellation_reason,
-        });
       } else {
         toast.error("Ошибка при получении заказа");
       }
@@ -65,35 +38,6 @@ const Details = () => {
       toast.error("Сервер недоступен. Проверьте подключение.");
     } finally {
       setLoader(false);
-    }
-  };
-
-  const updateOrder = async (data) => {
-    setDisable(true);
-    try {
-      const res = await fetch(`${apiUrl}/orders/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${adminToken()}`,
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success(result.message || "Статус был успешно изменен");
-        navigate("/admin/orders");
-      } else {
-        toast.error("Ошибка при изменении статуса");
-      }
-    } catch (error) {
-      console.error("Ошибка сети или парсинга");
-      toast.error("Сервер недоступен. Проверьте подключение.");
-    } finally {
-      setDisable(false);
     }
   };
 
@@ -107,7 +51,7 @@ const Details = () => {
         <h1 className="title text-start mb-10">Заказы</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
-            <AdminSidebar />
+            <UserSidebar />
           </div>
           <div className="col-span-1 lg:col-span-9 flex flex-col gap-6 shadow-sm rounded-md p-4">
             <h2 className="subtitle font-playfair">Детали заказа</h2>
@@ -116,7 +60,7 @@ const Details = () => {
               <>
                 <Nostate text={`Заказ с номером ${id} не найден`} />
                 <Link
-                  to="/admin/orders"
+                  to="/profile/orders"
                   className="btn btn-secondary self-start text-center min-w-32 sm:min-w-0"
                 >
                   Назад
@@ -177,10 +121,10 @@ const Details = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div className="space-y-2">
                     <div className="font-semibold text-text-title">
-                      Имя: {order.name}
+                      Имя получателя: {order.name}
                     </div>
                     {order.surname && (
-                      <div className="font-semibold text-text-title">
+                      <div className="font-semibold">
                         Фамилия: {order.surname}
                       </div>
                     )}
@@ -243,7 +187,7 @@ const Details = () => {
                   </div>
                 </div>
 
-                <div className="mt-4 border-t text-text-title border-text-default/20 pt-2 space-y-1 hidden sm:block">
+                <div className="mt-4 text-text-title border-t border-text-default/20 pt-2 space-y-1 hidden sm:block">
                   <div className="flex justify-between">
                     <span>Подытог</span>
                     <span>{order.subtotal} ₽</span>
@@ -282,94 +226,14 @@ const Details = () => {
                 </div>
               </div>
             )}
-
-            {order && (
-              <div className="space-y-6">
-                <h2 className="subtitle font-playfair">
-                  Обновить статус заказа
-                </h2>
-                <form
-                  onSubmit={handleSubmit(updateOrder)}
-                  className="flex flex-col gap-4"
-                >
-                  <CustomSelect
-                    {...register("status", {
-                      required: "Поле статус явялется обязательным",
-                    })}
-                    label="Статус"
-                    name="status"
-                    options={[
-                      { value: "pending", label: "В ожидании" },
-                      { value: "shipped", label: "Отправлен" },
-                      { value: "delivered", label: "Доставлен" },
-                      { value: "cancelled", label: "Отменен" },
-                    ]}
-                    value={status}
-                    onChange={(value) => setValue("status", value)}
-                    error={errors.status?.message}
-                  />
-
-                  {status === "cancelled" && (
-                    <div>
-                      <label className="text-sm sm:text-lg md:text-2xl font-semibold mb-2">
-                        Причина
-                      </label>
-                      <input
-                        {...register("cancellation_reason", {
-                          required: "Введите причину отмены заказа",
-                          validate: (value) =>
-                            /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
-                            "Причина должна содержать только буквы",
-                        })}
-                        name="cancellation_reason"
-                        type="text"
-                        className={`border border-border-light focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
-                          errors.cancellation_reason ? "border-red-500" : ""
-                        }`}
-                        placeholder="Причина отмены заказа"
-                      />
-                      {errors.cancellation_reason && (
-                        <p className="text-red-500 text-sm">
-                          {errors.cancellation_reason.message}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  <CustomSelect
-                    {...register("payment_status", {
-                      required: "Поле статус оплаты явялется обязательным",
-                    })}
-                    label="Статус оплаты"
-                    name="payment_status"
-                    options={[
-                      { value: "paid", label: "Оплачен" },
-                      { value: "not_paid", label: "Не оплачен" },
-                    ]}
-                    value={payment_status}
-                    onChange={(value) => setValue("payment_status", value)}
-                    error={errors.payment_status?.message}
-                  />
-
-                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                    <Link
-                      onClick={() => {
-                        navigate(-1);
-                      }}
-                      className="btn btn-secondary self-start text-center min-w-32"
-                    >
-                      Назад
-                    </Link>
-                    <button
-                      type="submit"
-                      className="btn btn-primary self-start min-w-32"
-                    >
-                      Обновить
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
+            <div>
+              <Link
+                to="/profile/orders"
+                className="btn btn-secondary self-start text-center min-w-32 sm:min-w-0"
+              >
+                Назад
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -377,4 +241,4 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default MyOrderDetails;

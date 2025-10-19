@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AdminAuthContext } from "@components/context/AdminAuth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
 
@@ -52,7 +52,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10 lg:mb-20">Вход в админ панель</h1>
         <div className="max-w-lg mx-auto">
           <div className="rounded-md shadow-sm p-6 ">

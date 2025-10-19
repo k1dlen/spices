@@ -101,7 +101,7 @@ const Catalog = () => {
   return (
     <>
       <>
-        <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+        <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
           {products.length == 0 &&
             loader == true &&
             subcategories.length == 0 &&
@@ -109,7 +109,10 @@ const Catalog = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4  items-start">
             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 ">
               {categories.map((category) => (
-                <div key={category.id} className="shadow-sm p-4 rounded-md">
+                <div
+                  key={category.id}
+                  className="shadow-sm p-4 rounded-md overflow-y-auto max-h-100"
+                >
                   <h3 className="mb-3 text-2xl md:text-4xl sm:text-3xl text-text-title">
                     {category.name}
                   </h3>
@@ -118,7 +121,10 @@ const Catalog = () => {
                     {subcategories
                       .filter((sub) => sub.category_id === category.id)
                       .map((sub) => (
-                        <li key={sub.id} className="mb-2 ms-2 flex-shrink-0">
+                        <li
+                          key={sub.id}
+                          className="mb-2 ms-2 flex-shrink-0 text-text-default"
+                        >
                           <input
                             type="checkbox"
                             value={sub.id}

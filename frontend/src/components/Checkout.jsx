@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "@components/context/Cart";
 import Loader from "@components/common/Loader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { userToken, apiUrl } from "@components/common/http";
@@ -12,33 +12,33 @@ const Checkout = () => {
   const [disable, setDisable] = useState(false);
 
   const handlePhoneChange = (e) => {
-    let numbers = e.target.value.replace(/\D/g, "");
+    let value = e.target.value;
+    let digits = value.replace(/\D/g, "");
 
-    if (numbers.startsWith("7") || numbers.startsWith("8")) {
-      numbers = numbers.substring(1);
+    if (digits.startsWith("8")) {
+      digits = "7" + digits.slice(1);
     }
 
-    numbers = numbers.substring(0, 10);
+    if (digits.length > 0 && !digits.startsWith("7")) {
+      digits = "7" + digits;
+    }
+
+    if (digits.length > 11) {
+      digits = digits.slice(0, 11);
+    }
 
     let formatted = "";
-
-    if (numbers.length > 0) {
-      formatted += "+7 ";
-      formatted += " (" + numbers.substring(0, 3);
-    }
-    if (numbers.length >= 4) {
-      formatted += ") " + numbers.substring(3, 6);
-    }
-    if (numbers.length >= 7) {
-      formatted += "-" + numbers.substring(6, 8);
-    }
-    if (numbers.length >= 9) {
-      formatted += "-" + numbers.substring(8, 10);
+    if (digits) {
+      formatted = "+7";
+      const rest = digits.slice(1);
+      if (rest.length > 0) formatted += " (" + rest.slice(0, 3);
+      if (rest.length >= 4) formatted += ") " + rest.slice(3, 6);
+      if (rest.length >= 7) formatted += "-" + rest.slice(6, 8);
+      if (rest.length >= 9) formatted += "-" + rest.slice(8, 10);
     }
 
     setValue("mobile", formatted);
   };
-
   const {
     register,
     handleSubmit,
@@ -62,7 +62,7 @@ const Checkout = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const res = await fetch(`${apiUrl}/getUserDetail`, {
+      const res = await fetch(`${apiUrl}/get-user-detail`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -108,7 +108,7 @@ const Checkout = () => {
       if (res.ok) {
         toast.success("Заказ успешно создан");
         clearCart();
-        navigate("/profile");
+        navigate(`/confirmation/${result.id}`);
       } else {
         toast.error("Ошибка при создании заказа");
       }
@@ -126,7 +126,7 @@ const Checkout = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10">Оформление заказа</h1>
         <form onSubmit={handleSubmit(saveOrder)}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
@@ -142,11 +142,18 @@ const Checkout = () => {
                     </label>
                     <input
                       {...register("name", {
-                        required: "Поле имя являестя обязательным",
+                        required: "Поле имя является обязательным",
+                        maxLength: {
+                          value: 50,
+                          message: "Поле имя не должно превышать 50 символов",
+                        },
+                        validate: (value) =>
+                          /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                          "Имя должно содержать только буквы",
                       })}
                       type="text"
-                      className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
-                        errors.name ? "border-red-500" : ""
+                      className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                        errors.name ? "border-red-500" : "border-border-light"
                       }`}
                       placeholder="Ваше имя"
                     />
@@ -169,8 +176,8 @@ const Checkout = () => {
                         },
                       })}
                       type="email"
-                      className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
-                        errors.email ? "border-red-500" : ""
+                      className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                        errors.email ? "border-red-500" : "border-border-light"
                       }`}
                       placeholder="example@gmail.com"
                     />
@@ -185,10 +192,27 @@ const Checkout = () => {
                       Фамилия
                     </label>
                     <input
-                      {...register("surname")}
+                      {...register("surname", {
+                        maxLength: {
+                          value: 50,
+                          message:
+                            "Поле фамилия не должно превышать 50 символов",
+                        },
+                        validate: (value) => {
+                          if (!value || value.trim() === "") {
+                            return true;
+                          }
+                          return (
+                            /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                            "Фамилия должна содержать только буквы"
+                          );
+                        },
+                      })}
                       type="text"
-                      className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
-                        errors.surname ? "border-red-500" : ""
+                      className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                        errors.surname
+                          ? "border-red-500"
+                          : "border-border-light"
                       }`}
                       placeholder="Ваша фамилия"
                     />
@@ -210,11 +234,11 @@ const Checkout = () => {
                         required: "Поле телефона является обязательным",
                       })}
                       id="mobile"
-                      value={mobile}
+                      value={mobile ?? ""}
                       onChange={handlePhoneChange}
                       type="tel"
-                      className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${
-                        errors.mobile ? "border-red-500" : ""
+                      className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary ${
+                        errors.mobile ? "border-red-500" : "border-border-light"
                       }`}
                       placeholder="+7 (999) 999-99-99"
                     />
@@ -232,9 +256,12 @@ const Checkout = () => {
                   <textarea
                     {...register("address", {
                       required: "Поле адреса является обязательным",
+                      validate: (value) =>
+                        /^[A-Za-zА-Яа-яЁё0-9\s-]+$/.test(value) ||
+                        "Адрес должен содержать только буквы, цифры, пробелы и дефис",
                     })}
-                    className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md w-full ${
-                      errors.address ? "border-red-500" : ""
+                    className={`border p-3 text-lg sm:text-xl md:text-2xl text-text-default rounded-md w-full ${
+                      errors.address ? "border-red-500" : "border-border-light"
                     }`}
                     placeholder="Город, улица, дом, квартира"
                     rows={3}
@@ -248,7 +275,7 @@ const Checkout = () => {
                 <div className="mt-6">
                   <h3 className="subtitle font-playfair mb-4">Способ оплаты</h3>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-3 p-2 border border-border-light rounded-md">
+                    <div className="flex items-center gap-3 p-3 border border-border-light rounded-md">
                       <input
                         type="radio"
                         id="cash_on_place"
@@ -260,12 +287,12 @@ const Checkout = () => {
                       />
                       <label
                         htmlFor="cash_on_place"
-                        className="text-sm sm:text-lg md:text-2xl"
+                        className="text-lg sm:text-xl md:text-2xl text-text-title"
                       >
                         Наличными при получении
                       </label>
                     </div>
-                    <div className="flex items-center gap-3 p-2 border border-border-light rounded-md">
+                    <div className="flex items-center gap-3 p-3 border border-border-light rounded-md">
                       <input
                         type="radio"
                         id="card_on_place"
@@ -277,7 +304,7 @@ const Checkout = () => {
                       />
                       <label
                         htmlFor="card_on_place"
-                        className="text-sm sm:text-lg md:text-2xl"
+                        className="text-lg sm:text-xl md:text-2xl text-text-title"
                       >
                         Картой при получении
                       </label>

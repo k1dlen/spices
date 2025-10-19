@@ -66,7 +66,7 @@ const Show = () => {
   }, []);
   return (
     <>
-      <div className="container mx-auto my-10 lg:my-20 px-1 sm:px-0">
+      <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         <h1 className="title text-start mb-10">Заказы</h1>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           <div className="col-span-1 lg:col-span-3 flex flex-col lg:shadow-sm rounded-md">
@@ -76,7 +76,7 @@ const Show = () => {
             {loader == true && <Loader />}
             {loader == false && orders.length == 0 && (
               <div className="shadow-sm">
-                <Nostate text="Подкатегории не найдены" />
+                <Nostate text="Нет найденных заказов" />
               </div>
             )}
             <div className="hidden sm:block shadow-sm rounded-md overflow-x-auto">
@@ -279,27 +279,29 @@ const Show = () => {
               ))}
             </div>
 
-            <div className="flex justify-start space-x-2">
-              <button
-                onClick={() => handlePageChange(meta.current_page - 1)}
-                disabled={meta.current_page === 1}
-                className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
-              >
-                Назад
-              </button>
+            {orders.length > 0 && (
+              <div className="flex justify-start space-x-2">
+                <button
+                  onClick={() => handlePageChange(meta.current_page - 1)}
+                  disabled={meta.current_page === 1}
+                  className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
+                >
+                  Назад
+                </button>
 
-              <span className="px-3 py-1 text-text-default">
-                Страница {meta.current_page} из {meta.last_page}
-              </span>
+                <span className="px-3 py-1 text-text-default">
+                  Страница {meta.current_page} из {meta.last_page}
+                </span>
 
-              <button
-                onClick={() => handlePageChange(meta.current_page + 1)}
-                disabled={meta.current_page === meta.last_page}
-                className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
-              >
-                Вперёд
-              </button>
-            </div>
+                <button
+                  onClick={() => handlePageChange(meta.current_page + 1)}
+                  disabled={meta.current_page === meta.last_page}
+                  className="px-3 py-1 rounded-md border border-border-light disabled:opacity-50"
+                >
+                  Вперёд
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

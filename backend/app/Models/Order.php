@@ -38,7 +38,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'created_at' => 'datetime:d M, Y',
+            'created_at' => 'datetime',
         ];
     }
 }
