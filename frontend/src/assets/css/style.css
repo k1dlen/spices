@@ -18,15 +18,18 @@
   --font-openSans: "Open Sans", sans-serif;
 }
 
+:root {
+  color-scheme: light only;
+  forced-color-adjust: none !important;
+}
+
 body {
-  background-color: var(--color-bg-base);
+  background-color: var(--color-bg-base) !important;
   font-family: var(--font-openSans);
 }
 
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
-  forced-color-adjust: none;
 }
 
 /* Buttons */

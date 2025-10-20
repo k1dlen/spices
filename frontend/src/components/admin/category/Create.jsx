@@ -76,6 +76,9 @@ const Create = () => {
                 <input
                   {...register("name", {
                     required: "Введите название категории",
+                    validate: (value) =>
+                      /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                      "Категория должна содержать только буквы",
                   })}
                   type="text"
                   className={`border border-border-light p-2 text-sm sm:text-lg md:text-2xl rounded-md ${

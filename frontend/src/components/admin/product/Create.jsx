@@ -204,6 +204,9 @@ const Create = () => {
                 <input
                   {...register("name", {
                     required: "Введите название товара",
+                    validate: (value) =>
+                      /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                      "Название товара должно содержать только буквы",
                   })}
                   type="text"
                   className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
@@ -219,10 +222,13 @@ const Create = () => {
               <CustomSelect
                 label="Категория"
                 name="category_id"
-                options={categories.map((cat) => ({
-                  value: cat.id,
-                  label: cat.name,
-                }))}
+                options={[
+                  { value: "", label: "Выберите из списка" },
+                  ...categories.map((cat) => ({
+                    value: cat.id,
+                    label: cat.name,
+                  })),
+                ]}
                 value={category_id}
                 onChange={(value) => {
                   setValue("category_id", value);
@@ -285,6 +291,10 @@ const Create = () => {
                       min: {
                         value: 0,
                         message: "Граммовка не может быть меньше 0",
+                      },
+                      max: {
+                        value: 9999,
+                        message: "Граммовка не может быть больше 9999",
                       },
                     })}
                     type="number"
@@ -408,8 +418,8 @@ const Create = () => {
                   <input
                     {...register("discount", {
                       required: "Введите процент скидки",
-                      min: { value: 0, message: "Минимум 0%" },
-                      max: { value: 100, message: "Максимум 100%" },
+                      min: { value: 1, message: "Минимум 1%" },
+                      max: { value: 99, message: "Максимум 99%" },
                     })}
                     type="number"
                     step="1"
