@@ -315,6 +315,9 @@ const Edit = () => {
                   <input
                     {...register("name", {
                       required: "Введите название товара",
+                      validate: (value) =>
+                        /^[A-Za-zА-Яа-яЁё\s-]+$/.test(value) ||
+                        "Название товара должно содержать только буквы",
                     })}
                     type="text"
                     className={`border border-border-light p-2 text-sm  focus:outline-none focus:ring-1 focus:ring-primary sm:text-lg md:text-2xl rounded-md ${
@@ -398,6 +401,10 @@ const Edit = () => {
                         min: {
                           value: 0,
                           message: "Граммовка не может быть меньше 0",
+                        },
+                        max: {
+                          value: 9999,
+                          message: "Граммовка не может быть больше 9999",
                         },
                       })}
                       type="number"
@@ -571,15 +578,15 @@ const Edit = () => {
                     <input
                       {...register("discount", {
                         required: "Введите процент скидки",
-                        min: { value: 0, message: "Минимум 0%" },
-                        max: { value: 100, message: "Максимум 100%" },
+                        min: { value: 1, message: "Минимум 1%" },
+                        max: { value: 99, message: "Максимум 99%" },
                       })}
                       type="number"
                       step="1"
                       onChange={(e) => {
                         let val = parseInt(e.target.value);
-                        if (val > 100) val = 100;
-                        if (val < 0) val = 0;
+                        if (val > 100) val = 99;
+                        if (val < 0) val = 1;
                         setValue("discount", val, { shouldValidate: true });
                       }}
                       className={`border border-border-light focus:outline-none focus:ring-1 focus:ring-primary mt-2 p-2 rounded-md text-sm sm:text-lg md:text-2xl w-full ${
