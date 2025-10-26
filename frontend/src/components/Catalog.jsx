@@ -102,10 +102,18 @@ const Catalog = () => {
     <>
       <>
         <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
-          {products.length == 0 &&
-            loader == true &&
-            subcategories.length == 0 &&
-            categories.length == 0 && <Loader></Loader>}
+          {loader == true &&
+            products.length == 0 &&
+            categories.length == 0 &&
+            subcategories.length == 0 && <Loader></Loader>}
+          {loader == false &&
+            products.length == 0 &&
+            categories.length == 0 &&
+            subcategories.length == 0 && (
+              <div className="shadow-sm w-full">
+                <Nostate text="Товаров не найдено" />
+              </div>
+            )}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4  items-start">
             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 ">
               {categories.map((category) => (
@@ -152,11 +160,14 @@ const Catalog = () => {
               {loader == true &&
                 categories.length > 0 &&
                 subcategories.length > 0 && <Loader></Loader>}
-              {loader == false && products.length == 0 && (
-                <div className="shadow-sm">
-                  <Nostate text="Товаров не найдено" />
-                </div>
-              )}
+              {loader == false &&
+                products.length == 0 &&
+                ((categories.length > 0 && subcategories.length > 0) ||
+                  (categories.length > 0 && subcategories.length == 0)) && (
+                  <div className="shadow-sm">
+                    <Nostate text="Товаров не найдено" />
+                  </div>
+                )}
               {!loader && products.length > 0 && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                   {products &&

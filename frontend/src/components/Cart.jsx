@@ -17,14 +17,18 @@ const Cart = () => {
     loader,
   } = useContext(CartContext);
 
-  const handleQuantityChange = (id, newQty) => {
+  const handleQuantityChange = (item, newQty) => {
+    const { id, quantity, product } = item;
+    const reserve = product?.reserve ?? 1;
+    if (newQty > reserve) {
+      return;
+    }
     if (newQty <= 0) {
       deleteCartItem(id);
     } else {
       updateCartItem(id, newQty);
     }
   };
-
   const [open, setOpen] = useState(false);
   const tooltipRef = useRef();
 
@@ -127,7 +131,7 @@ const Cart = () => {
                               <span
                                 onClick={() =>
                                   handleQuantityChange(
-                                    item.id,
+                                    item,
                                     item.quantity - 1
                                   )
                                 }
@@ -143,7 +147,7 @@ const Cart = () => {
                               <span
                                 onClick={() =>
                                   handleQuantityChange(
-                                    item.id,
+                                    item,
                                     item.quantity + 1
                                   )
                                 }
@@ -301,7 +305,7 @@ const Cart = () => {
                       Количество:{" "}
                       <span
                         onClick={() =>
-                          handleQuantityChange(item.id, item.quantity - 1)
+                          handleQuantityChange(item, item.quantity - 1)
                         }
                         className="font-light text-5xl cursor-pointer hover:opacity-70 select-none"
                       >
@@ -310,7 +314,7 @@ const Cart = () => {
                       <span className="font-semibold">x {item.quantity}</span>
                       <span
                         onClick={() =>
-                          handleQuantityChange(item.id, item.quantity + 1)
+                          handleQuantityChange(item, item.quantity + 1)
                         }
                         className={`font-light select-none text-5xl transition-opacity ${
                           item.quantity < item.product?.reserve

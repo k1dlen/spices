@@ -141,6 +141,7 @@ export const CartProvider = ({ children }) => {
           image_url: item.image || item.product?.image_url,
           grams: item.grams || item.product?.grams,
           discount: item.discount || item.product?.discount || 0,
+          reserve: item.reserve || item.product?.reserve,
         },
       }));
 
@@ -213,6 +214,7 @@ export const CartProvider = ({ children }) => {
               grams: product.grams,
               discount: product.discount || 0,
               image_url: product.image_url,
+              reserve: product.reserve,
             },
           },
         ];

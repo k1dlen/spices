@@ -187,12 +187,32 @@ const Header = () => {
                 </span>
               )}
             </Link>
-
             <button
-              className="md:hidden flex flex-col gap-1"
+              className="md:hidden flex flex-col items-center justify-center w-9 h-auto relative"
               onClick={() => setIsOpen(!isOpen)}
             >
-              <FeatherIcon icon="menu" className="text-text-title w-9 h-auto" />
+              <div
+                className={`absolute transition-all duration-300 ease-in-out ${
+                  isOpen
+                    ? "opacity-0 rotate-90 scale-75"
+                    : "opacity-100 rotate-0 scale-100"
+                }`}
+              >
+                <FeatherIcon
+                  icon="menu"
+                  className="text-text-title w-9 h-auto"
+                />
+              </div>
+
+              <div
+                className={`absolute transition-all duration-300 ease-in-out ${
+                  isOpen
+                    ? "opacity-100 rotate-0 scale-100"
+                    : "opacity-0 -rotate-90 scale-75"
+                }`}
+              >
+                <FeatherIcon icon="x" className="text-text-title w-9 h-auto" />
+              </div>
             </button>
           </div>
         </div>

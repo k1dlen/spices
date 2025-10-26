@@ -257,8 +257,8 @@ const Checkout = () => {
                     {...register("address", {
                       required: "Поле адреса является обязательным",
                       validate: (value) =>
-                        /^[A-Za-zА-Яа-яЁё0-9\s-]+$/.test(value) ||
-                        "Адрес должен содержать только буквы, цифры, пробелы и дефис",
+                        /^[A-Za-zА-Яа-яЁё0-9\s.,:/№-]+$/.test(value) ||
+                        "Адрес должен содержать только буквы, цифры, пробелы и допустимые знаки препинания (.,:/№-)",
                     })}
                     className={`border p-3 text-lg sm:text-xl md:text-2xl text-text-default rounded-md w-full ${
                       errors.address ? "border-red-500" : "border-border-light"

@@ -7,7 +7,7 @@ const About = () => {
       id="about"
       className="xl:py-20 lg:py-10 my-10 lg:my-20 bg-[var(--color-bg-base)] relative overflow-hidden"
     >
-      <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-8 items-center">
+      <div className="container mx-auto px-1 md:px-0 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h2 className="title mb-4">О нас</h2>
           <p className="text-text-default mb-4 text-lg sm:text-xl md:text-2xl">
