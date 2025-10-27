@@ -22,20 +22,20 @@ const About = () => {
             удовольствии от еды.
           </p>
         </div>
-        <div className="lg:hidden">
+        <div className="lg:hidden overflow-hidden">
           <img
             src={AboutImage}
             alt="О нас"
-            className="w-full h-auto object-cover rounded-md"
+            className="w-full h-auto object-cover rounded-md hover:scale-105 duration-300 transition-all ease-in-out"
           />
         </div>
         <div className="hidden lg:block"></div>
       </div>
-      <div className="hidden lg:block absolute top-0 bottom-0 right-0 w-1/2">
+      <div className="hidden lg:block rounded-l-md absolute top-0 bottom-0 right-0 w-1/2 overflow-hidden">
         <img
           src={AboutImage}
           alt="О нас"
-          className="w-full h-full object-cover rounded-l-md"
+          className="w-full h-full object-cover rounded-l-md hover:scale-105 duration-300 transition-all ease-in-out"
         />
       </div>
     </div>

@@ -47,7 +47,7 @@ const Cart = () => {
       <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         {loader == true && <Loader />}
         {loader == false && cartData.length == 0 && (
-          <div className="flex flex-col items-start  md:items-center">
+          <div className="flex flex-col justify-center min-h-[650px] items-start  md:items-center">
             <h1 className="title mb-6">Корзина пуста</h1>
             <p className="text-text-default text-lg sm:text-xl md:text-2xl mb-6 text-left md:text-center">
               Похоже, вы ещё ничего не добавили в корзину. Посмотрите наш
@@ -130,10 +130,7 @@ const Cart = () => {
                             <div className="inline-flex items-center gap-6 justify-center select-none text-text-title">
                               <span
                                 onClick={() =>
-                                  handleQuantityChange(
-                                    item,
-                                    item.quantity - 1
-                                  )
+                                  handleQuantityChange(item, item.quantity - 1)
                                 }
                                 className="font-light cursor-pointer hover:opacity-70 select-none"
                               >
@@ -146,10 +143,7 @@ const Cart = () => {
 
                               <span
                                 onClick={() =>
-                                  handleQuantityChange(
-                                    item,
-                                    item.quantity + 1
-                                  )
+                                  handleQuantityChange(item, item.quantity + 1)
                                 }
                                 className={`font-light select-none transition-opacity ${
                                   item.quantity < item.product?.reserve

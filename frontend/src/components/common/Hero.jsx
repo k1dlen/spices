@@ -35,7 +35,7 @@ const Hero = () => {
             <img
               src={HeroImage}
               alt="HeroImage"
-              className="hidden lg:block max-w-full h-auto"
+              className="hidden lg:block max-w-full h-auto hover:scale-105 transition-all ease-in-out duration-300"
             />
           </div>
         </div>

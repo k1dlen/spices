@@ -121,7 +121,7 @@ const Catalog = () => {
                   key={category.id}
                   className="shadow-sm p-4 rounded-md overflow-y-auto max-h-100"
                 >
-                  <h3 className="mb-3 text-2xl md:text-4xl sm:text-3xl text-text-title">
+                  <h3 className="mb-3 text-xl md:text-2xl lg:text-3xl text-text-title">
                     {category.name}
                   </h3>
 
@@ -147,7 +147,7 @@ const Catalog = () => {
                             }}
                             className="w-[1em] h-[1em] accent-[var(--color-primary)]"
                           />
-                          <label className="ps-2 text-sm sm:text-lg md:text-2xl">
+                          <label className="ps-2 text-sm sm:text-lg md:text-xl">
                             {sub.name}
                           </label>
                         </li>
@@ -176,7 +176,7 @@ const Catalog = () => {
                       .map((product) => {
                         return (
                           <div
-                            className="col-span-1 md:col-span-6 xl:col-span-4 flex flex-col gap-6"
+                            className="col-span-1 md:col-span-6 xl:col-span-4 flex flex-col gap-3 md:gap-6"
                             key={product.id}
                           >
                             <div className="overflow-hidden rounded-md">
@@ -190,8 +190,8 @@ const Catalog = () => {
                             <p className="text-start text-lg sm:text-xl md:text-2xl text-text-default">
                               {product.short_description}, {product.grams}г.
                             </p>
-                            <div className="mt-auto flex flex-col gap-6">
-                              <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title flex items-center gap-3 truncate">
+                            <div className="mt-auto flex flex-col gap-3 md:gap-6">
+                              <p className="font-semibold text-xl md:text-2xl lg:text-3xl text-text-title flex items-center gap-3 truncate">
                                 {product.discount ? (
                                   <>
                                     <span className="line-through text-text-title/20">

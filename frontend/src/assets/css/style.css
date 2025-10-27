@@ -7,7 +7,7 @@
   --color-primary-hover: #6b4a3e; /* buttonHover */
   --color-border-light: #e1d9cf; /* line */
   --color-text-default: #333333; /* text */
-  --color-text-alt: #ffffff; /* AltText */
+  --color-text-alt: #fffff0; /* AltText */
   --color-bg-block: #f6f0e8; /* BlockBackground */
   --color-text-title: #1d2020; /* Title | Logo */
   --color-bg-base: #fefbf8; /* Background | Logo */
@@ -36,11 +36,11 @@ html {
 
 @layer components {
   .btn {
-    @apply font-openSans inline-block text-xl md:text-2xl lg:text-3xl xl:text-4xl rounded-md border font-normal px-6 py-3 md:px-8 md:py-3.5 lg:px-9 lg:py-4 xl:px-12 xl:py-5 border-border-dark transition-all duration-300 ease-in-out;
+    @apply font-openSans inline-block text-lg sm:text-xl md:text-2xl rounded-md border font-normal px-3 py-2 md:px-4 md:py-3 border-border-dark transition-all duration-300 ease-in-out;
   }
 
   .btn-primary {
-    @apply bg-primary text-white;
+    @apply bg-primary text-text-alt;
   }
   .btn-primary:hover {
     @apply bg-primary-hover text-text-alt;
@@ -50,18 +50,18 @@ html {
   }
 
   .btn-secondary {
-    @apply bg-text-title text-white;
+    @apply bg-text-title text-text-alt;
   }
   .btn-secondary:hover {
-    @apply bg-text-default text-white;
+    @apply bg-text-default text-text-alt;
   }
   .btn-secondary:active {
     @apply opacity-95;
   }
 
   .btn-disabled {
-    @apply font-openSans inline-block text-xl md:text-2xl lg:text-3xl xl:text-4xl 
-      rounded-md border font-normal px-6 py-3 md:px-8 md:py-3.5 lg:px-9 lg:py-4 xl:px-12 xl:py-5 
+    @apply font-openSans inline-block text-lg sm:text-xl md:text-2xl
+      rounded-md border font-normal px-3 py-2 md:px-4 md:py-3 
       border-text-default text-text-default bg-transparent
       cursor-not-allowed pointer-events-none;
   }

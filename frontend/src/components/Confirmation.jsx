@@ -200,7 +200,7 @@ const Confirmation = () => {
                   <div className="flex flex-col gap-3 pt-4 mt-4">
                     <Link
                       to="/profile/orders"
-                      className="btn self-start md:self-stretch min-w-32 text-center btn-secondary text-xl xl:text-2xl"
+                      className="btn self-start md:self-stretch min-w-32 text-center btn-secondary"
                       onClick={() =>
                         window.scrollTo({ top: 0, behavior: "smooth" })
                       }

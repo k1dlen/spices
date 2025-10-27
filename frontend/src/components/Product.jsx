@@ -144,7 +144,8 @@ const Product = () => {
 
     if (user) {
       item = cartData.find(
-        (i) => i.product_id === product.id || i.id === product.id
+        (i) =>
+          i.product?.product_id === product.id || i.product?.id === product.id
       );
     } else {
       item = cartData.find((i) => i.product?.product_id === product.id);

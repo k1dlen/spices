@@ -372,7 +372,7 @@ const Checkout = () => {
                 </div>
                 <button
                   disabled={disable}
-                  className="btn btn-primary  sm:w-full mt-6 text-xl xl:text-2xl"
+                  className="btn btn-primary  sm:w-full mt-6"
                 >
                   {disable ? "Обработка..." : "Подтвердить"}
                 </button>

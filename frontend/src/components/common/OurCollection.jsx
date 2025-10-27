@@ -51,7 +51,7 @@ const OurCollection = () => {
                     className="max-w-full h-auto rounded-md hover:scale-105 duration-300 transition-all ease-in-out"
                   />
                 </div>
-                <h3 className="title">{product.name}</h3>
+                <h3 className="subtitle">{product.name}</h3>
                 <p className="text-start text-lg sm:text-xl md:text-2xl">
                   {product.short_description}
                 </p>
