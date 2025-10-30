@@ -221,7 +221,7 @@ const Register = () => {
                     )}
                   </button>
                 </div>
-                <div className="absolute left-0 top-full mt-1 bg-bg-base w-64 border rounded-md shadow-md p-2 text-sm text-gray-700 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
+                <div className="absolute z-10 left-0 top-full mt-1 bg-bg-base w-64 border rounded-md shadow-md p-2 text-sm text-gray-700 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
                   Пароль должен содержать:
                   <ul className="list-disc ml-4">
                     <li>Минимум 12 символов</li>

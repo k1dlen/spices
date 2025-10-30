@@ -110,7 +110,7 @@ const Catalog = () => {
             products.length == 0 &&
             categories.length == 0 &&
             subcategories.length == 0 && (
-              <div className="shadow-sm w-full">
+              <div className="w-full flex justify-center min-h-[650px]">
                 <Nostate text="Товаров не найдено" />
               </div>
             )}
@@ -125,7 +125,7 @@ const Catalog = () => {
                     {category.name}
                   </h3>
 
-                  <ul className="flex flex-nowrap gap-2 overflow-x-auto lg:flex-col lg:gap-2 lg:overflow-visible">
+                  <ul className="flex flex-nowrap gap-2 overflow-x-auto  lg:flex-col lg:gap-2 lg:overflow-visible">
                     {subcategories
                       .filter((sub) => sub.category_id === category.id)
                       .map((sub) => (

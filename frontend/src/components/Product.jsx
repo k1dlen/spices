@@ -226,7 +226,7 @@ const Product = () => {
               </div>
               <div className="col-span-1 lg:col-span-9 flex flex-col gap-6">
                 <h1 className="title">{product.name}</h1>
-                <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-text-title flex items-center gap-3">
+                <p className="font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-title flex items-center gap-3">
                   {product.discount ? (
                     <>
                       <span className="line-through text-text-title/20">
@@ -244,12 +244,16 @@ const Product = () => {
                   )}
                 </p>
 
+                <p className="text-start text-lg sm:text-xl md:text-2xl text-text-default">
+                  Вес в упаковке: {product.grams}г.
+                </p>
+
                 <p className="text-text-default text-lg sm:text-xl md:text-2xl">
                   {product.description ||
                     "Информация о продукте скоро появится."}
                 </p>
                 {inCart ? (
-                  <div className="btn inline-flex items-center justify-center gap-6 self-start select-none px-5 py-2">
+                  <div className="btn inline-flex items-center justify-center gap-6 self-start select-none">
                     <span
                       onClick={decrement}
                       className={`text-3xl font-light transition-opacity hover:opacity-70 cursor-pointer`}

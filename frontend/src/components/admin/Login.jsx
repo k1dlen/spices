@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AdminAuthContext } from "@components/context/AdminAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { apiUrl } from "@components/common/http";
 import { toast } from "react-toastify";
+import FeatherIcon from "feather-icons-react";
 
 const Login = () => {
   const { login } = useContext(AdminAuthContext);
@@ -13,6 +14,8 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -92,18 +95,31 @@ const Login = () => {
                 >
                   Пароль
                 </label>
-                <input
-                  {...register("password", {
-                    required: "Поле пароля является обязательным",
-                  })}
-                  id="password"
-                  type="password"
-                  className={`border rounded-md p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary
+                <div className="relative w-full">
+                  <input
+                    {...register("password", {
+                      required: "Поле пароля является обязательным",
+                    })}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    className={`border rounded-md w-full p-3 text-text-default text-lg sm:text-xl md:text-2xl focus:outline-none focus:ring-1 focus:ring-primary
                     ${
                       errors.password ? "border-red-500" : "border-border-light"
                     }`}
-                  placeholder="••••••••"
-                />
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary focus:outline-none"
+                  >
+                    {showPassword ? (
+                      <FeatherIcon icon="eye" className="h-4 w-auto" />
+                    ) : (
+                      <FeatherIcon icon="eye-off" className="h-4 w-auto" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-500">
                     {errors.password?.message}

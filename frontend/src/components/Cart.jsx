@@ -3,8 +3,10 @@ import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
 import { CartContext } from "@components/context/Cart";
 import Loader from "@components/common/Loader";
+import { AuthContext } from "./context/Auth";
 
 const Cart = () => {
+  const { user } = useContext(AuthContext);
   const {
     cartData,
     updateCartItem,
@@ -23,10 +25,13 @@ const Cart = () => {
     if (newQty > reserve) {
       return;
     }
+
+    const itemId = user ? id : product?.product_id;
+
     if (newQty <= 0) {
-      deleteCartItem(id);
+      deleteCartItem(itemId);
     } else {
-      updateCartItem(id, newQty);
+      updateCartItem(itemId, newQty);
     }
   };
   const [open, setOpen] = useState(false);
@@ -47,7 +52,7 @@ const Cart = () => {
       <div className="container mx-auto my-10 lg:my-20 px-1 md:px-0">
         {loader == true && <Loader />}
         {loader == false && cartData.length == 0 && (
-          <div className="flex flex-col justify-center min-h-[650px] items-start  md:items-center">
+          <div className="flex flex-col justify-center items-start  md:items-center">
             <h1 className="title mb-6">Корзина пуста</h1>
             <p className="text-text-default text-lg sm:text-xl md:text-2xl mb-6 text-left md:text-center">
               Похоже, вы ещё ничего не добавили в корзину. Посмотрите наш
@@ -161,7 +166,11 @@ const Cart = () => {
                           </td>
                           <td className="py-6 text-right align-top">
                             <button
-                              onClick={() => deleteCartItem(item.id)}
+                              onClick={() =>
+                                deleteCartItem(
+                                  user ? item.id : item.product?.product_id
+                                )
+                              }
                               aria-label="Удалить из корзины"
                               className="text-text-default hover:text-red-500 transition-all duration-300"
                             >
@@ -182,7 +191,7 @@ const Cart = () => {
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between mb-2">
                     <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl text-text-default">
-                      Подытог
+                      Сумма
                     </span>
                     <span className="text-text-title font-semibold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
                       ₽{subTotal().toFixed(2)}
@@ -325,7 +334,9 @@ const Cart = () => {
                   </div>
 
                   <button
-                    onClick={() => deleteCartItem(item.id)}
+                    onClick={() =>
+                      deleteCartItem(user ? item.id : item.product?.product_id)
+                    }
                     aria-label="Удалить из корзины"
                     className="text-text-default hover:text-red-500 transition-all duration-300 sm:self-center mt-2 sm:mt-0"
                   >
@@ -341,7 +352,7 @@ const Cart = () => {
             <div className="rounded-md p-4 shadow-sm mt-10 lg:hidden">
               <div className="sm:hidden space-y-1 mb-3">
                 <div>
-                  <span className="text-text-default text-xl">Подытог:</span>
+                  <span className="text-text-default text-xl">Сумма:</span>
                   <span className="text-text-title font-semibold text-xl ml-2">
                     ₽{subTotal().toFixed(2)}
                   </span>
@@ -393,7 +404,7 @@ const Cart = () => {
               <div className="hidden sm:block">
                 <div className="flex justify-between mb-2">
                   <span className="text-text-default text-xl md:text-2xl">
-                    Подытог
+                    Сумма
                   </span>
                   <span className="text-text-title font-semibold text-xl md:text-2xl">
                     ₽{subTotal().toFixed(2)}

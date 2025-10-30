@@ -189,7 +189,7 @@ const MyOrderDetails = () => {
 
                 <div className="mt-4 text-text-title border-t border-text-default/20 pt-2 space-y-1 hidden sm:block">
                   <div className="flex justify-between">
-                    <span>Подытог</span>
+                    <span>Сумма</span>
                     <span>{order.subtotal} ₽</span>
                   </div>
                   <div className="flex justify-between">
@@ -208,7 +208,7 @@ const MyOrderDetails = () => {
 
                 <div className="mt-4 border-t text-text-title border-text-default/20 pt-2 space-y-1 sm:hidden">
                   <div className="flex flex-start">
-                    <span className="mr-1">Подытог:</span>
+                    <span className="mr-1">Сумма:</span>
                     <span>{order.subtotal} ₽</span>
                   </div>
                   <div className="flex flex-start">
