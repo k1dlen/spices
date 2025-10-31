@@ -38,6 +38,11 @@ const Footer = () => {
               <li>
                 <Link
                   to={`/`}
+                  onClick={() => {
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 150);
+                  }}
                   className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
                 >
                   Главная

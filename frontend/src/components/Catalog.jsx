@@ -119,13 +119,13 @@ const Catalog = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="shadow-sm p-4 rounded-md max-h-100"
+                  className="shadow-sm p-4 rounded-md overflow-y-auto max-h-100"
                 >
-                  <h3 className="mb-3 text-xl md:text-2xl lg:text-3xl text-text-title">
+                  <h3 className="mb-3 text-lg sm:text-xl xl:text-2xl font-semibold text-text-title">
                     {category.name}
                   </h3>
 
-                  <ul className="flex flex-nowrap gap-2 overflow-x-auto  lg:flex-col lg:gap-2 lg:overflow-y-auto">
+                  <ul className="flex flex-nowrap gap-2 overflow-x-auto  lg:flex-col lg:gap-2">
                     {subcategories
                       .filter((sub) => sub.category_id === category.id)
                       .map((sub) => (
@@ -147,7 +147,7 @@ const Catalog = () => {
                             }}
                             className="w-[1em] h-[1em] accent-[var(--color-primary)]"
                           />
-                          <label className="ps-2 text-sm sm:text-lg md:text-xl">
+                          <label className="ps-2 text-sm sm:text-lg xl:text-xl">
                             {sub.name}
                           </label>
                         </li>
@@ -182,7 +182,7 @@ const Catalog = () => {
                             <div className="overflow-hidden rounded-md aspect-[1/1]">
                               <img
                                 src={product.image_url}
-                                alt="CardImage"
+                                alt={product.name}
                                 loading={index < 3 ? "eager" : "lazy"}
                                 fetchpriority={index < 3 ? "high" : undefined}
                                 decoding="async"
