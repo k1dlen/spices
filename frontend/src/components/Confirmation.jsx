@@ -171,6 +171,7 @@ const Confirmation = () => {
                         <img
                           src={item.product.image_url}
                           alt={item.product.name}
+                          loading="lazy"
                           className="w-16 h-16 object-contain rounded-md flex-shrink-0"
                         />
                         <div className="flex-1">

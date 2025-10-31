@@ -196,6 +196,9 @@ const Product = () => {
                       <img
                         src={img.url}
                         alt={`product-${index}`}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchpriority={index === 0 ? "high" : undefined}
+                        decoding="async"
                         className="object-contain w-full h-auto rounded-md"
                       />
                     </SwiperSlide>
@@ -217,6 +220,8 @@ const Product = () => {
                         <img
                           src={img.url}
                           alt={`thumb-${index}`}
+                          loading="lazy"
+                          decoding="async"
                           className="object-contain rounded-md w-full h-full"
                         />
                       </SwiperSlide>
@@ -316,6 +321,8 @@ const Product = () => {
                           <img
                             src={product.image_url}
                             alt={product.title}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-auto rounded-md group-hover:scale-105 transition-transform duration-300 ease-in-out"
                           />
                         </div>

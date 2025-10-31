@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import FeatherIcon from "feather-icons-react";
 import { CartContext } from "@components/context/Cart";
 import Loader from "@components/common/Loader";
-import { AuthContext } from "./context/Auth";
+import { AuthContext } from "@components/context/Auth";
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
@@ -99,6 +99,7 @@ const Cart = () => {
                               <img
                                 src={item.product?.image_url}
                                 alt={item.product?.name}
+                                loading="lazy"
                                 className="w-1/4 h-auto object-contain rounded-md"
                               />
                               <div>
@@ -274,6 +275,7 @@ const Cart = () => {
                   <img
                     src={item.product?.image_url}
                     alt={item.product?.name}
+                    loading="lazy"
                     className="w-full sm:w-1/4 h-auto object-contain rounded-md sm:mx-0"
                   />
 

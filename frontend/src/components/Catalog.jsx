@@ -110,7 +110,7 @@ const Catalog = () => {
             products.length == 0 &&
             categories.length == 0 &&
             subcategories.length == 0 && (
-              <div className="w-full flex justify-center min-h-[650px]">
+              <div className="w-full flex justify-center">
                 <Nostate text="Товаров не найдено" />
               </div>
             )}
@@ -119,13 +119,13 @@ const Catalog = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="shadow-sm p-4 rounded-md overflow-y-auto max-h-100"
+                  className="shadow-sm p-4 rounded-md max-h-100"
                 >
                   <h3 className="mb-3 text-xl md:text-2xl lg:text-3xl text-text-title">
                     {category.name}
                   </h3>
 
-                  <ul className="flex flex-nowrap gap-2 overflow-x-auto  lg:flex-col lg:gap-2 lg:overflow-visible">
+                  <ul className="flex flex-nowrap gap-2 overflow-x-auto  lg:flex-col lg:gap-2 lg:overflow-y-auto">
                     {subcategories
                       .filter((sub) => sub.category_id === category.id)
                       .map((sub) => (
@@ -173,16 +173,19 @@ const Catalog = () => {
                   {products &&
                     products
                       .filter((product) => product.is_active)
-                      .map((product) => {
+                      .map((product, index) => {
                         return (
                           <div
                             className="col-span-1 md:col-span-6 xl:col-span-4 flex flex-col gap-3 md:gap-6"
                             key={product.id}
                           >
-                            <div className="overflow-hidden rounded-md">
+                            <div className="overflow-hidden rounded-md aspect-[1/1]">
                               <img
                                 src={product.image_url}
                                 alt="CardImage"
+                                loading={index < 3 ? "eager" : "lazy"}
+                                fetchpriority={index < 3 ? "high" : undefined}
+                                decoding="async"
                                 className="max-w-full h-auto rounded-md hover:scale-105 duration-300 transition-all ease-in-out"
                               />
                             </div>

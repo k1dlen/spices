@@ -329,6 +329,7 @@ const Checkout = () => {
                         <img
                           src={item.product.image_url}
                           alt={item.product.name}
+                          loading="lazy"
                           className="w-20 h-auto object-contain rounded-md"
                         />
                         <h4 className="text-text-title font-semibold text-lg">
@@ -343,6 +344,7 @@ const Checkout = () => {
                         <img
                           src={item.product.image_url}
                           alt={item.product.name}
+                          loading="lazy"
                           className="w-20 h-auto object-contain rounded-md flex-shrink-0"
                         />
                         <div className="flex-1">

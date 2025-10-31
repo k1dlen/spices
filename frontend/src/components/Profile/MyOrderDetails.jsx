@@ -161,6 +161,8 @@ const MyOrderDetails = () => {
                             <img
                               src={item.product.image_url}
                               alt={item.product_name}
+                              loading="lazy"
+                              decoding="async"
                               className="w-16 h-16 object-cover rounded sm:mr-3 "
                             />
                           )}

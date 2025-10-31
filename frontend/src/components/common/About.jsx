@@ -1,5 +1,5 @@
 import React from "react";
-import AboutImage from "@assets/images/AboutUs.png";
+import AboutImage from "@assets/images/AboutUs.webp";
 
 const About = () => {
   return (
@@ -26,6 +26,8 @@ const About = () => {
           <img
             src={AboutImage}
             alt="О нас"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto object-cover rounded-md hover:scale-105 duration-300 transition-all ease-in-out"
           />
         </div>
@@ -35,6 +37,8 @@ const About = () => {
         <img
           src={AboutImage}
           alt="О нас"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover rounded-l-md hover:scale-105 duration-300 transition-all ease-in-out"
         />
       </div>

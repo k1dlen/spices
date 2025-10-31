@@ -47,7 +47,10 @@ const OurCollection = () => {
                 <div className="overflow-hidden rounded-md">
                   <img
                     src={product.image_url}
-                    alt="CardImage"
+                    alt={product.name}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
                     className="max-w-full h-auto rounded-md hover:scale-105 duration-300 transition-all ease-in-out"
                   />
                 </div>

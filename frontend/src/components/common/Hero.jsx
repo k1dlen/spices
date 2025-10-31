@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import HeroImage from "@assets/images/Hero.png";
+import HeroImage from "@assets/images/Hero.webp";
 
 const Hero = () => {
   return (
@@ -35,6 +35,7 @@ const Hero = () => {
             <img
               src={HeroImage}
               alt="HeroImage"
+              loading="eager"
               className="hidden lg:block max-w-full h-auto hover:scale-105 transition-all ease-in-out duration-300"
             />
           </div>
